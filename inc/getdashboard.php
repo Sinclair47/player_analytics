@@ -82,7 +82,7 @@ $info = $database->single();
 								<div class="row">
 									<div class="col-xs-3 fa fa-clock-o fa-5x"></div>
 									<div class="col-xs-9 text-right">
-										<div class="medium">
+										<div class="huge">
 											<?php echo PlaytimeCon($info['duration']) ?>
 										</div>
 										<div>
