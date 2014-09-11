@@ -86,7 +86,7 @@ function ConnMethod($key)
   if (preg_match("/quickplay/", $key)) {
     $key = 'quickplay';
   }
-  $ConnMethod = array("steam" => "SteamURL","serverbrowser_history" => "History Tab","serverbrowser_favorites" => "Favorites Tab","serverbrowser_internet" => "Internet Tab","quickplay" => "Quickplay","serverbrowser_lan" => "Lan Tab","serverbrowser_friends" => "Friends Tab","matchmaking" => "Matchmaking","redirect" => "Redirect","" => "Console");
+  $ConnMethod = array("steam" => "SteamURL","serverbrowser_history" => "History","serverbrowser_favorites" => "Favorites","serverbrowser_internet" => "Internet","quickplay" => "Quickplay","serverbrowser_lan" => "Lan","serverbrowser_friends" => "Friends","matchmaking" => "Matchmaking","redirect" => "Redirect","" => "Console");
   return $ConnMethod[$key];
 }
 

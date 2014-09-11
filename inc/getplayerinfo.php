@@ -62,9 +62,9 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 										<thead>
 											<tr>
 												<th style="text-align:left;">Server </th>
-												<th style="text-align:center;width:15%;">Date </th>
-												<th style="text-align:center;width:15%;">Duration </th>
-												<th style="text-align:center;width:10%;"><i class="fa fa-group fa-fw"> </i></th>
+												<th style="text-align:center;width:8%;">Date </th>
+												<th style="text-align:center;width:10%;">Duration </th>
+												<th style="text-align:center;width:5%;"><i class="fa fa-group fa-fw"> </i></th>
 												<th style="text-align:right;">Map </th>
 												<th style="text-align:right;">Method </th>
 												<th style="text-align:right;">IP </th>
