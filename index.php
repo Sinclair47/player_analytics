@@ -49,7 +49,7 @@
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-fixed-top" style="margin-bottom: 0">
 			<div class="navbar-header">
-				<button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button> <a class="navbar-brand" href="index.html">Player Analytics</a>
+				<button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button> <a class="navbar-brand" href="index.php">Player Analytics</a>
 			</div><!-- /.navbar-header -->
 			<div id="sidebar" class="navbar-default sidebar">
 				<div class="sidebar-nav navbar-collapse">
