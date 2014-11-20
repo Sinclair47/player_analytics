@@ -8,6 +8,7 @@ define("DB_HOST",  'localhost');
 define("DB_USER",  'USER');
 define("DB_PASS",  'PASSWORD');
 define("DB_NAME",  'DATABASE');
+define("DB_PORT",  '3306');
 
 $Home = "/";
 $Title = "Title";

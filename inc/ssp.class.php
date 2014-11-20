@@ -312,13 +312,14 @@ class SSP {
      *     * db   - database name
      *     * user - user name
      *     * pass - user password
+     *     * port - host port
      * @return resource Database connection handle
      */
     static function sql_connect ( $sql_details )
     {
         try {
             $db = @new PDO(
-                "mysql:host={$sql_details['host']};dbname={$sql_details['db']}",
+                "mysql:host={$sql_details['host']};port={$sql_details['port']};dbname={$sql_details['db']}",
                 $sql_details['user'],
                 $sql_details['pass'],
                 array( PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8" )
