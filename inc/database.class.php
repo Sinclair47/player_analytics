@@ -5,13 +5,14 @@ class Database{
 	private $user 	= DB_USER;
 	private $pass 	= DB_PASS;
 	private $dbname = DB_NAME;
+	private $port 	= DB_PORT;
 
 	private $dbh;
 	private $error;
 
 	public function __construct(){
         // Set DSN
-        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+        $dsn = 'mysql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->dbname;
         // Set options
         $options = array(
             PDO::ATTR_PERSISTENT	=> true,

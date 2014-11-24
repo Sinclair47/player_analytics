@@ -15,7 +15,8 @@ $sql_details = array(
     'user' => DB_USER,
     'pass' => DB_PASS,
     'db'   => DB_NAME,
-    'host' => DB_HOST
+    'host' => DB_HOST,
+    'port' => DB_PORT
 );
 
 if (isset($_GET['type']) && $_GET['type'] == 'getconnections') {
