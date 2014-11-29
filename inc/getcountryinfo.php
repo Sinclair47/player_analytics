@@ -58,7 +58,18 @@ $id = $_GET['id'];
 			"order": [[0, 'desc']]
 		});
 		$('#players tbody').on('click', 'tr', function () {
-				window.location = "player.php?id="+players.cell(this, 2).data();
+			$.ajax({
+				type: "GET",
+				url: "inc/getplayerinfo.php",
+				data: 'id='+players.cell(this, 2).data(),
+				beforeSend: function(){
+					$('#overlay').fadeIn();
+				},
+				success: function(msg){
+					$('#content').html(msg);
+					$('#overlay').fadeOut();
+				}
+			});
 		});
 	});
 </script>
