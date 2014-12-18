@@ -86,7 +86,10 @@ foreach ($premium as $key => $value) {
 		$value['label'] = 'F2P';
 	}
 	$premium[$key]['label'] = $value['label'];
-	$premium[$key]['value'] = number_format($value['value']/$p_total*100,2);
+	if(!$p_total == 0)
+		$premium[$key]['value'] = number_format($value['value']/$p_total*100,2);
+	else
+		$premium[$key]['value'] = 0;
 }
 
 $country = json_encode($country);
