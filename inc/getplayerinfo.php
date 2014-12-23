@@ -44,7 +44,7 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 									<h4>SteamID</h4>
 									<span class="badge-profile"><?php echo $info[0]['auth']; ?></span>
 									<h4>AccountID</h4>
-									<span class="badge-profile"><?php echo substr($_GET['id'], 10) * 2; ?></span>
+									<span class="badge-profile"><?php echo (substr($_GET['id'], 10) * 2) + substr($_GET['id'], 8, 1); ?></span>
 									<h4>Location</h4>
 									<span class="badge-profile"><?php echo $info[0]['country']; ?></span>
 									<h4>OS</h4>
