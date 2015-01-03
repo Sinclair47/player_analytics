@@ -28,6 +28,7 @@ $id = $_GET['id'];
 												<th>Premium</th>
 												<th>HTML</th>
 												<th>OS</th>
+												<th>Server</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -53,7 +54,8 @@ $id = $_GET['id'];
 				{ "data": "duration" },
 				{ "data": "premium" },
 				{ "data": "html_motd_disabled" },
-				{ "data": "os" }
+				{ "data": "os" },
+				{ "data": "server_ip", "visible" : false, "searchable" : true }
 			],
 			"order": [[0, 'desc']]
 		});

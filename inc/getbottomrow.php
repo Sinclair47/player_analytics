@@ -24,20 +24,43 @@ $p_total = 0;
 // Instantiate database.
 $database = new Database();
 
-$database->query('SELECT `country` AS label, COUNT(`country`) AS value FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country`');
-$database->bind(':start', $date[0]);
-$database->bind(':end', $date[1]);
-$country = $database->resultset();
+if (isset($_GET['server'])) {
+	$server_ip = $_GET['server'];
+	$database->query('SELECT `country` AS label, COUNT(`country`) AS value FROM `player_analytics` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `country`');
+	$database->bind(':start', $date[0]);
+	$database->bind(':end', $date[1]);
+	$database->bind(':ip', $server_ip);
+	$country = $database->resultset();
 
-$database->query('SELECT `connect_method` AS label, COUNT(`connect_method`) AS value FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
-$database->bind(':start', $date[0]);
-$database->bind(':end', $date[1]);
-$method = $database->resultset();
+	$database->query('SELECT `connect_method` AS label, COUNT(`connect_method`) AS value FROM `player_analytics` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
+	$database->bind(':start', $date[0]);
+	$database->bind(':end', $date[1]);
+	$database->bind(':ip', $server_ip);
+	$method = $database->resultset();
 
-$database->query('SELECT `premium` AS label, COUNT(`premium`) AS value FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
-$database->bind(':start', $date[0]);
-$database->bind(':end', $date[1]);
-$premium = $database->resultset();
+	$database->query('SELECT `premium` AS label, COUNT(`premium`) AS value FROM `player_analytics` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
+	$database->bind(':start', $date[0]);
+	$database->bind(':end', $date[1]);
+	$database->bind(':ip', $server_ip);
+	$premium = $database->resultset();
+}
+
+else {
+	$database->query('SELECT `country` AS label, COUNT(`country`) AS value FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country`');
+	$database->bind(':start', $date[0]);
+	$database->bind(':end', $date[1]);
+	$country = $database->resultset();
+
+	$database->query('SELECT `connect_method` AS label, COUNT(`connect_method`) AS value FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
+	$database->bind(':start', $date[0]);
+	$database->bind(':end', $date[1]);
+	$method = $database->resultset();
+
+	$database->query('SELECT `premium` AS label, COUNT(`premium`) AS value FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
+	$database->bind(':start', $date[0]);
+	$database->bind(':end', $date[1]);
+	$premium = $database->resultset();
+}
 
 foreach ($country as $key => $value) {
 	$c_total += $value['value'];

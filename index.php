@@ -1,3 +1,19 @@
+<?php 
+
+//Database Info
+include 'inc/config.php';
+
+// Include database class
+include 'inc/database.class.php';
+
+// Instantiate database.
+$database = new Database();
+
+$database->query('SELECT DISTINCT `server_ip` FROM `player_analytics`');
+$servers = $database->resultset();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,13 +21,13 @@
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<title>Player Analytics</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/dataTables.bootstrap.css" rel="stylesheet">
-	<link href="css/sb-admin-2.css" rel="stylesheet">
-	<link href="css/morris.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="css/dataTables.bootstrap.css" rel="stylesheet" type="text/css">
+	<link href="css/sb-admin-2.css" rel="stylesheet" type="text/css">
+	<link href="css/morris.css" rel="stylesheet" type="text/css">
 	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="css/jquery-jvectormap-1.2.2.css">
-	<link rel="stylesheet" href="css/daterangepicker.css">
+	<link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css">
+	<link href="css/daterangepicker.css" rel="stylesheet" type="text/css">
 	<style>
 		#overlay {
 		  position:absolute; 
@@ -70,6 +86,17 @@
 							<a><i class="fa fa-group fa-fw"></i> Players</a>
 							<input type="hidden" value="getplayers"/>
 						</li>
+						<li>
+							<a data-toggle="collapse" data-target="#servers"><i class="fa fa-tasks fa-fw"></i> Servers</a>
+							<ul id="servers" class="collapse nav">
+							<?php foreach ($servers as $server): ?>
+								<li class="menu_server">
+									<a><?php echo ServerName($server['server_ip']); ?></a>
+									<input type="hidden" value="<?php echo $server['server_ip']; ?>"/>
+								</li>								
+							<?php endforeach ?>
+							</ul>
+						</li>
 					</ul>
 				</div><!-- /.sidebar-collapse -->
 			</div><!-- /.navbar-static-side -->
@@ -105,6 +132,22 @@
 			$.ajax({
 				type: "GET",
 				url: "inc/"+ $(this).find("input").val()+".php",
+				beforeSend: function(){
+					$('#overlay').fadeIn("fast");
+					$('#content').empty();
+					$('.jvectormap-label').detach();
+					$('.daterangepicker').detach();
+				},
+				success: function(msg){
+					$('#content').delay(400).fadeIn("slow").html(msg);
+					$('#overlay').delay(400).fadeOut( "slow" );
+				}
+			});
+		});
+		$(document).on("click",".menu_server",function(){
+			$.ajax({
+				type: "GET",
+				url: "inc/getdashboard.php?server="+ $(this).find("input").val(),
 				beforeSend: function(){
 					$('#overlay').fadeIn("fast");
 					$('#content').empty();

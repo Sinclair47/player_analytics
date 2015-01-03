@@ -21,10 +21,18 @@ $date = explode(",", $_GET['id']);
 // Instantiate database.
 $database = new Database();
 
-$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country_code`');
-$database->bind(':start', $date[0]);
-$database->bind(':end', $date[1]);
-$map = $database->resultset();
+if (isset($_GET['server'])) {
+	$server = $_GET['server'];
+	$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `player_analytics` WHERE `server_ip` = :ip GROUP BY `country_code`');
+	$database->bind(':ip', $server);
+	$map = $database->resultset();
+}
+else {
+	$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country_code`');
+	$database->bind(':start', $date[0]);
+	$database->bind(':end', $date[1]);
+	$map = $database->resultset();
+}
 
 foreach ($map as $key => $value) {
 	if ($value['country_code'] != NULL) {
