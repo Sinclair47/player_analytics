@@ -56,15 +56,30 @@ foreach ($country as $key => $value) {
 }
 
 foreach ($method as $key => $value) {
-	if (preg_match("/quickplay/", $value['label'])) {
-		if (!isset($id)) {
-			$id = $key;
-			$methods[$id]['label'] = 'quickplay';
-			$methods[$id]['value'] = $value['value'];
+	if (preg_match("/quickplay/", $value['label']) || preg_match("/quickpick/", $value['label'])) {
+		
+		if (preg_match("/quickplay/", $value['label'])) {
+			if (!isset($id)) {
+				$id = $key;
+				
+				$methods[$id]['label'] = 'quickplay';
+				$methods[$id]['value'] = $value['value'];
+			}
+			else {
+				$methods[$id]['label'] = 'quickplay';
+				$methods[$id]['value'] += $value['value'];
+			}
 		}
-		else {
-			$methods[$id]['label'] = 'quickplay';
-			$methods[$id]['value'] += $value['value'];
+		if (preg_match("/quickpick/", $value['label'])) {
+			if (!isset($id2)) {
+				$id2 = $key;
+				$methods[$id2]['label'] = 'quickpick';
+				$methods[$id2]['value'] = $value['value'];
+			}
+			else {
+				$methods[$id2]['label'] = 'quickpick';
+				$methods[$id2]['value'] += $value['value'];
+			}
 		}
 	}
 	else {
