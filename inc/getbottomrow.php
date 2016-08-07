@@ -55,6 +55,33 @@ foreach ($country as $key => $value) {
 	$country[$key]['value'] = number_format($value['value']/$c_total*100,2);
 }
 
+#show the top ten countries only
+$tmp_countries = $country;
+$countries_filtered = array();
+$c_percent = 0;
+
+for($i = 1; $i <= 10; $i++) {
+	$top = array_reduce($tmp_countries, function ($a, $b) {
+		return @$a['value'] > $b['value'] ? $a : $b ;
+	});
+	foreach($tmp_countries as $key => &$c) {
+		if($c['label'] == $top['label']) {
+			unset($tmp_countries[$key]);
+		}
+	}
+
+	$countries_filtered[] = $top;
+	$c_percent += $top['value'];
+}
+
+$countries_filtered = array_reverse($countries_filtered); #reverse array order, so the donut is from big to small
+$countries_filtered[] = array(
+							'label' => 'Other Countries',
+							'value' => (100 - $c_percent),
+							);
+$country = $countries_filtered;
+
+
 foreach ($method as $key => $value) {
 	if (preg_match("/quickplay/", $value['label']) || preg_match("/quickpick/", $value['label'])) {
 		
