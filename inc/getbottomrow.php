@@ -60,7 +60,7 @@ $tmp_countries = $country;
 $countries_filtered = array();
 $c_percent = 0;
 
-for($i = 1; $i <= 10; $i++) {
+for($i = 1; $i <= $Show_Max_Countries; $i++) {
 	$top = array_reduce($tmp_countries, function ($a, $b) {
 		return @$a['value'] > $b['value'] ? $a : $b ;
 	});
@@ -141,7 +141,7 @@ $premium = json_encode($premium);
 					<div class="col-lg-4">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<i class="fa fa-bar-chart-o fa-fw"></i> Countries
+								<i class="fa fa-bar-chart-o fa-fw"></i> Top <?php echo $Show_Max_Countries ?> Countries
 							</div>
 							<div class="panel-body">
 								<div id="country"></div>

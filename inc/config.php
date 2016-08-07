@@ -12,6 +12,7 @@ define("DB_PORT",  '3306');
 
 $Home = "/";
 $Title = "Title";
+$Show_Max_Countries = 10;
 
 const STEAM_APIKEY  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
