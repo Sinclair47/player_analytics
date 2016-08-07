@@ -33,6 +33,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 												<th><i class="fa fa-usd"></i></th>
 												<th><i class="fa fa-html5"></i></th>
 												<th>OS</th>
+												<th>Server</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -60,7 +61,8 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 				{ "data": "country" },
 				{ "data": "premium" },
 				{ "data": "html_motd_disabled" },
-				{ "data": "os" }
+				{ "data": "os" },
+				{ "data": "server_ip", "visible" : false, "searchable" : true }
 			],
 			"order": [[0, 'desc']]
 		});

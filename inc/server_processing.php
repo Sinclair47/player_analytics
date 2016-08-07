@@ -76,6 +76,10 @@ if (isset($_GET['type']) && $_GET['type'] == 'getconnections') {
         array(
             'db'        => 'os',
             'dt'        => 'os'
+        ),
+        array(
+            'db'        => 'server_ip',
+            'dt'        => 'server_ip'
         )
     );
 
@@ -147,6 +151,10 @@ if (isset($_GET['type']) && $_GET['type'] == 'getplayers') {
         array(
             'db'        => 'os',
             'dt'        => 'os'
+        ),
+        array(
+            'db'        => 'server_ip',
+            'dt'        => 'server_ip'
         )
     );
 
@@ -200,6 +208,10 @@ if (isset($_GET['type']) && $_GET['type'] == 'getcountryinfo') {
         array(
             'db'        => 'os',
             'dt'        => 'os'
+        ),
+        array(
+            'db'        => 'server_ip',
+            'dt'        => 'server_ip'
         )
     );
 
@@ -210,5 +222,156 @@ if (isset($_GET['type']) && $_GET['type'] == 'getcountryinfo') {
 
     echo json_encode(
         SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraCondition)
+    );
+}
+
+if (isset($_GET['type']) && $_GET['type'] == 'c') {
+
+    $table = 'player_analytics';
+    $primaryKey = 'id';
+     
+    $columns = array(
+        array(
+            'db'        => 'id',
+            'dt'        => 'id'
+        ),
+        array(
+            'db'        => 'name',
+            'dt'        => 'name',
+            'formatter' => function( $d, $row ) {
+                return htmlentities($d);
+            }
+        ),
+        array(
+            'db'        => 'auth',
+            'dt'        => 'auth'
+        ),
+        array(
+            'db'        => 'connect_time',
+            'dt'        => 'connect_time',
+            'formatter' => function( $d, $row ) {
+                return date('h:i:s a m/d/Y',$d);
+            }
+        ),
+        array(
+            'db'        => 'connect_method',
+            'dt'        => 'connect_method',
+            'formatter' => function( $d, $row ) {
+                return ConnMethod($d);
+            }
+        ),
+        array(
+            'db'        => 'duration',
+            'dt'        => 'duration',
+            'formatter' => function( $d, $row ) {
+                return PlaytimeCon($d);
+            }
+        ),
+        array(
+            'db'        => 'country',
+            'dt'        => 'country'
+        ),
+        array(
+            'db'        => 'premium',
+            'dt'        => 'premium'
+        ),
+        array(
+            'db'        => 'html_motd_disabled',
+            'dt'        => 'html_motd_disabled'
+        ),
+        array(
+            'db'        => 'os',
+            'dt'        => 'os'
+        ),
+        array(
+            'db'        => 'server_ip',
+            'dt'        => 'server_ip'
+        )
+    );
+
+    $joinQuery = '';
+    $extraCondition = "`server_ip` = '".$_GET['server']."'";
+
+    require('ssp.class.php');
+
+    echo json_encode(
+        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraCondition)
+    );
+}
+
+if (isset($_GET['type']) && $_GET['type'] == 'u') {
+
+    $table = 'player_analytics';
+    $primaryKey = 'id';
+     
+    $columns = array(
+        array(
+            'db'        => 'id',
+            'dt'        => 'id'
+        ),
+        array(
+            'db'        => 'name',
+            'dt'        => 'name',
+            'formatter' => function( $d, $row ) {
+                return htmlentities($d);
+            }
+        ),
+        array(
+            'db'        => 'auth',
+            'dt'        => 'auth'
+        ),
+        array(
+            'db'        => 'SUM(duration)',
+            'dt'        => 'duration',
+            'formatter' => function( $d, $row ) {
+                return PlaytimeCon($d);
+            }
+        ),
+        array(
+            'db'        => 'COUNT(auth)',
+            'dt'        => 'total',
+            'as'        => 'total',
+            'formatter' => function( $d, $row ) {
+                return number_format($d);
+            }
+        ),
+        array(
+            'db'        => 'MAX(connect_time)',
+            'dt'        => 'connect_time',
+            'as'        => 'connect_time',
+            'formatter' => function( $d, $row ) {
+                return date('h:i:s a m/d/Y',$d);
+            }
+        ),
+        array(
+            'db'        => 'country',
+            'dt'        => 'country'
+        ),
+        array(
+            'db'        => 'premium',
+            'dt'        => 'premium'
+        ),
+        array(
+            'db'        => 'html_motd_disabled',
+            'dt'        => 'html_motd_disabled'
+        ),
+        array(
+            'db'        => 'os',
+            'dt'        => 'os'
+        ),
+        array(
+            'db'        => 'server_ip',
+            'dt'        => 'server_ip'
+        )
+    );
+
+    $joinQuery = '';
+    $extraCondition = "`server_ip` = '".$_GET['server']."'";
+    $groupBy = "GROUP BY auth";
+
+    require('ssp.class.php');
+
+    echo json_encode(
+        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraCondition, $groupBy)
     );
 }
