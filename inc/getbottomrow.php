@@ -105,6 +105,7 @@ if(count($country) > 1) {
 		$c_percent += $top['value'];
 	}
 
+	$countries_filtered = array_reverse($countries_filtered); #reverse array order, so the donut is build up from big to small
 	if(!$skip_other_country_calc) {
 		$countries_filtered[] = array(
 									'label' => 'Other Countries',
