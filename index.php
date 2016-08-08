@@ -91,7 +91,7 @@ $servers = $database->resultset();
 							<ul id="servers" class="collapse nav">
 							<?php foreach ($servers as $server): ?>
 								<li class="menu_server">
-									<a><?php echo ServerName($server['server_ip']); ?></a>
+									<a><?php echo ServerName($server['server_ip'], $server_names); ?></a>
 									<input type="hidden" value="<?php echo $server['server_ip']; ?>"/>
 								</li>								
 							<?php endforeach ?>

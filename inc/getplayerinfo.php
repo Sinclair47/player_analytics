@@ -73,7 +73,7 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 										<tbody>
 						<?php foreach ($info as $info): ?>
 											<tr>
-												<td style="text-align:left;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?php echo ServerName($info['server_ip']); ?></td>
+												<td style="text-align:left;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?php echo ServerName($info['server_ip'], $server_names); ?></td>
 												<td style="text-align:center;"><?php echo date('y-m-d', $info['connect_time']); ?></td>
 												<td style="text-align:center;"><?php echo PlaytimeCon($info['duration']); ?></td>
 												<td style="text-align:center;"><?php echo $info['numplayers']; ?></td>

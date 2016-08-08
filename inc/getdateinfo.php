@@ -56,7 +56,7 @@ else {
 <?php foreach ($connections as $connections): ?>
 					<tr>
 						<td><?php echo $connections['time']; ?></td>
-						<td><?php echo ServerName($connections['server_ip']); ?></td>
+						<td><?php echo ServerName($connections['server_ip'], $server_names); ?></td>
 						<td style="text-align:center;"><?php echo $connections['connections']; ?></td>
 						<td style="text-align:center;"><?php echo $connections['players']; ?></td>
 					</tr>

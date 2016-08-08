@@ -12,26 +12,30 @@ define("DB_PORT",  '3306');
 
 $Home = "/";
 $Title = "Title";
-$Show_Max_Countries = 10;
+$Show_Max_Countries = 10; # Top 10 Countries
 
 const STEAM_APIKEY  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
-function ServerName($key)
-{
-  $servers = array(
-    "1.1.1.1" => "24/7 2FORT",
-    "2.2.2.2" => "TRADE & IDLE SERVER",
-    "3.3.3.3" => "WaffleTown",
-    "4.4.4.4" => "Chew Chew Train - 24/7 ChewChew",
-    "5.5.5.5" => "Black Server",
+#optional - replace ip with your server name
+$server_names = array(
+    "your_ip:port"  => "Server name",
+    "2.2.2.2"       => "TRADE & IDLE SERVER",
+    "3.3.3.3:20715" => "WaffleTown",
+    "4.4.4.4"       => "Chew Chew Train - 24/7 ChewChew",
+    "5.5.5.5"       => "Black Server",
+    
   );
 
-  if (array_key_exists($key, $servers)) {
-    return $servers[$key];
+
+
+## DO NOT TOUCH ANYTHING BELOW HERE ! ##
+
+function ServerName($key, $server_names)
+{
+  if (array_key_exists($key, $server_names)) {
+    return $server_names[$key];
   }
-  else {
-    return $key;
-  }
+  return $key;
 }
 
 function SteamTo64($key) 
