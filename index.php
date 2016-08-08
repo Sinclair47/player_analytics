@@ -9,7 +9,7 @@ include 'inc/database.class.php';
 // Instantiate database.
 $database = new Database();
 
-$database->query('SELECT DISTINCT `server_ip` FROM `player_analytics`');
+$database->query('SELECT DISTINCT `server_ip` FROM `player_analytics` ORDER BY server_ip');
 $servers = $database->resultset();
 
 ?>

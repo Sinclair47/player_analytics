@@ -82,27 +82,37 @@ foreach ($country as $key => $value) {
 $tmp_countries = $country;
 $countries_filtered = array();
 $c_percent = 0;
+$skip_other_country_calc = false;
 
-for($i = 1; $i <= $Show_Max_Countries; $i++) {
-	$top = array_reduce($tmp_countries, function ($a, $b) {
-		return @$a['value'] > $b['value'] ? $a : $b ;
-	});
-	foreach($tmp_countries as $key => &$c) {
-		if($c['label'] == $top['label']) {
-			unset($tmp_countries[$key]);
-		}
-	}
-
-	$countries_filtered[] = $top;
-	$c_percent += $top['value'];
+if(count($country) <= $Show_Max_Countries) {
+	$Show_Max_Countries = count($country);
+	$skip_other_country_calc = true;
 }
 
-$countries_filtered = array_reverse($countries_filtered); #reverse array order, so the donut is from big to small
-$countries_filtered[] = array(
-							'label' => 'Other Countries',
-							'value' => (100 - $c_percent),
-							);
-$country = $countries_filtered;
+
+if(count($country) > 1) {
+	for($i = 1; $i <= $Show_Max_Countries; $i++) {
+		$top = array_reduce($tmp_countries, function ($a, $b) {
+			return @$a['value'] > $b['value'] ? $a : $b ;
+		});
+		foreach($tmp_countries as $key => &$c) {
+			if($c['label'] == $top['label']) {
+				unset($tmp_countries[$key]);
+			}
+		}
+
+		$countries_filtered[] = $top;
+		$c_percent += $top['value'];
+	}
+
+	if(!$skip_other_country_calc) {
+		$countries_filtered[] = array(
+									'label' => 'Other Countries',
+									'value' => number_format(100 - $c_percent,2),
+		);
+	}
+	$country = $countries_filtered;
+}
 
 
 foreach ($method as $key => $value) {
