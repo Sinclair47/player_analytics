@@ -4,5 +4,11 @@ https://forums.alliedmods.net/showthread.php?t=230832
 
 forked from Sinclair47/player_analytics https://github.com/Sinclair47/player_analytics
 
+##Todo
+* Remove/replace "Hours Played" box with something more usefull.
+* Add a simple cache function
+* Add area charts to see changes over time
+* Maybe add a Chart as in HLStatsX
+
 ##Webpanel
 ![Player Analytics Webpanel](https://raw.githubusercontent.com/theChaosCoder/player_analytics/master/player_analytics.png)
