@@ -91,7 +91,7 @@ $servers = $database->resultset();
 							<ul id="servers" class="collapse nav">
 							<?php foreach ($servers as $server): ?>
 								<li class="menu_server">
-									<a><?php echo ServerName($server['server_ip'], $server_names); ?></a>
+									<a> <?php echo ServerName($server['server_ip'], $server_names); ?></a>
 									<input type="hidden" value="<?php echo $server['server_ip']; ?>"/>
 								</li>								
 							<?php endforeach ?>
@@ -127,6 +127,11 @@ $servers = $database->resultset();
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$( "#content" ).load( "inc/getdashboard.php" );
+
+			$("#servers li a").click(function() { // Server list
+				$("#servers li a").removeClass('active fa fa-arrow-circle-right');
+				$(this).addClass('active fa fa-arrow-circle-right');
+			});
 		});
 		$(document).on("click",".menu",function(){
 			$.ajax({
