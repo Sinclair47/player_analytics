@@ -137,10 +137,11 @@ foreach ($method as $key => $value) {
 		$methods[$key]['value'] = $value['value'];	
 	}
 }
-
-foreach ($methods as $key => $value) {
-	$methods[$key]['label'] = ConnMethod($value['label']);
-	$methods[$key]['value'] = number_format($value['value']/$m_total*100,2);
+if(isset($methods)) {
+	foreach ($methods as $key => $value) {
+		$methods[$key]['label'] = ConnMethod($value['label']);
+		$methods[$key]['value'] = number_format($value['value']/$m_total*100,2);
+	}
 }
 
 foreach ($premium as $key => $value) {

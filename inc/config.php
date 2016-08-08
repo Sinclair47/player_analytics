@@ -78,9 +78,23 @@ function StatCon($key,$lock)
   }
 }
 
-function PlaytimeCon($key)
+function PlaytimeCon($seconds)
 {
-  return floor($key/3600).gmdate(':i:s',$key);
+  return floor($seconds/3600).gmdate(':i:s', $seconds);
+}
+
+function PlaytimeConDashboard($seconds) {
+  #echo $seconds."<br>";
+    $date_format = '%aD %H:%ih';
+    if($seconds > 5184000) {# 2 months
+      $date_format = '%mM %dD %H:%ih';
+    }
+    if($seconds > 31536000) {# 1 Year
+      $date_format = '%yY %mM %H:%ih';
+    }
+  	$dtF = new \DateTime('@0');
+    $dtT = new \DateTime("@$seconds");
+    return $dtF->diff($dtT)->format($date_format);
 }
 
 function ConnMethod($key) 

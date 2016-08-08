@@ -87,7 +87,7 @@ $servers = $database->resultset();
 							<input type="hidden" value="getplayers"/>
 						</li>
 						<li>
-							<a data-toggle="collapse" data-target="#servers"><i class="fa fa-tasks fa-fw"></i> Servers</a>
+							<a data-toggle="collapse" data-target="#servers"><i class="fa fa-tasks fa-fw"></i> Servers <button type="button" class="btn btn-info btn-xs pull-right "><?php echo count($servers) ?></button></a>
 							<ul id="servers" class="collapse nav">
 							<?php foreach ($servers as $server): ?>
 								<li class="menu_server">
