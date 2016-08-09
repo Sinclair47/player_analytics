@@ -9,7 +9,7 @@ include 'inc/database.class.php';
 // Instantiate database.
 $database = new Database();
 
-$database->query('SELECT DISTINCT `server_ip` FROM `player_analytics` ORDER BY server_ip');
+$database->query('SELECT DISTINCT `server_ip` FROM `'.DB_TABLE_PA.'` ORDER BY server_ip');
 $servers = $database->resultset();
 
 ?>
@@ -86,6 +86,10 @@ $servers = $database->resultset();
 							<a><i class="fa fa-group fa-fw"></i> Players</a>
 							<input type="hidden" value="getplayers"/>
 						</li>
+						<li class="menu">
+							<a><i class="fa fa-shield fa-fw"></i> Staff</a>
+							<input type="hidden" value="getStaff"/>
+						</li>
 						<li>
 							<a data-toggle="collapse" data-target="#servers"><i class="fa fa-tasks fa-fw"></i> Servers <button type="button" class="btn btn-info btn-xs pull-right "><?php echo count($servers) ?></button></a>
 							<ul id="servers" class="collapse nav">
@@ -113,7 +117,8 @@ $servers = $database->resultset();
 
 	</div><!-- /Modal -->
 
-	<script src="js/jquery-1.11.0.js"></script>
+	<!--<script src="js/jquery-1.11.0.js"></script> -->
+	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.min.js"></script>
 	<script src="js/daterangepicker.js"></script>

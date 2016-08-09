@@ -17,13 +17,13 @@ $database = new Database();
 
 if (isset($_GET['server'])) {
 	$server_ip = $_GET['server'];
-	$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `player_analytics` WHERE `server_ip` = :ip');
+	$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip');
 	$database->bind(':ip', $server_ip);
 	$info = $database->single();
 }
 
 else {
-	$database->query('SELECT COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `player_analytics`');
+	$database->query('SELECT COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'`');
 	$info = $database->single();
 }
 

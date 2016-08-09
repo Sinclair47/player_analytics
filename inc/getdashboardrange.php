@@ -24,14 +24,14 @@ $database = new Database();
 if (isset($_GET['server'])) {
 	$server_ip = $_GET['server'];
 	if ($date[0] == $date[1]) {
-		$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(`auth`) AS total FROM `player_analytics` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
+		$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
 		$database->bind(':start', $date[0]);
 		$database->bind(':end', $date[1]);
 		$database->bind(':ip', $server_ip);
 		$connections = $database->resultset();
 	}
 	else {
-		$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(`auth`) AS total FROM `player_analytics` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `connect_date`');
+		$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `connect_date`');
 		$database->bind(':start', $date[0]);
 		$database->bind(':end', $date[1]);
 		$database->bind(':ip', $server_ip);
@@ -40,13 +40,13 @@ if (isset($_GET['server'])) {
 }
 else {
 	if ($date[0] == $date[1]) {
-		$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(`auth`) AS total FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
+		$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
 		$database->bind(':start', $date[0]);
 		$database->bind(':end', $date[1]);
 		$connections = $database->resultset();
 	}
 	else {
-		$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(`auth`) AS total FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `connect_date`');
+		$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `connect_date`');
 		$database->bind(':start', $date[0]);
 		$database->bind(':end', $date[1]);
 		$connections = $database->resultset();

@@ -15,7 +15,7 @@ include 'database.class.php';
 // Instantiate database.
 $database = new Database();
 
-$database->query('SELECT * FROM (SELECT * FROM `player_analytics` WHERE `auth` = :id ORDER BY `connect_time` DESC) AS a');
+$database->query('SELECT * FROM (SELECT * FROM `'.DB_TABLE_PA.'` WHERE `auth` = :id ORDER BY `connect_time` DESC) AS a');
 $database->bind(':id', $_GET['id']);
 $info = $database->resultset();
 

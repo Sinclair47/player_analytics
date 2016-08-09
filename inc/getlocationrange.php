@@ -23,12 +23,12 @@ $database = new Database();
 
 if (isset($_GET['server'])) {
 	$server = $_GET['server'];
-	$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `player_analytics` WHERE `server_ip` = :ip GROUP BY `country_code`');
+	$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip GROUP BY `country_code`');
 	$database->bind(':ip', $server);
 	$map = $database->resultset();
 }
 else {
-	$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country_code`');
+	$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country_code`');
 	$database->bind(':start', $date[0]);
 	$database->bind(':end', $date[1]);
 	$map = $database->resultset();

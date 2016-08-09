@@ -30,6 +30,9 @@ $server_names = array(
 
 ## DO NOT TOUCH ANYTHING BELOW HERE ! ##
 
+define("DB_TABLE_PA", "player_analytics");
+#define("DB_TABLE_PA", "pax");
+
 function ServerName($key, $server_names)
 {
   if (array_key_exists($key, $server_names)) {

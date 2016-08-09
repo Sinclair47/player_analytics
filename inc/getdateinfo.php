@@ -21,13 +21,13 @@ $database = new Database();
 
 if (isset($_GET['server'])) {
 	$server_ip = $_GET['server'];
-	$database->query('SELECT `server_ip`, COUNT(`auth`) AS connections, COUNT(DISTINCT(`auth`)) AS players, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%p %I:00") AS time FROM `player_analytics` WHERE `server_ip` = :ip AND `connect_date` = :id GROUP BY `server_ip`, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H") ORDER BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
+	$database->query('SELECT `server_ip`, COUNT(`auth`) AS connections, COUNT(DISTINCT(`auth`)) AS players, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%p %I:00") AS time FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` = :id GROUP BY `server_ip`, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H") ORDER BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
 	$database->bind(':id', $_GET['id']);
 	$database->bind(':ip', $server_ip);
 	$connections = $database->resultset();
 }
 else {
-	$database->query('SELECT `server_ip`, COUNT(`auth`) AS connections, COUNT(DISTINCT(`auth`)) AS players, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%p %I:00") AS time FROM `player_analytics` WHERE `connect_date` = :id GROUP BY `server_ip`, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H") ORDER BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
+	$database->query('SELECT `server_ip`, COUNT(`auth`) AS connections, COUNT(DISTINCT(`auth`)) AS players, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%p %I:00") AS time FROM `'.DB_TABLE_PA.'` WHERE `connect_date` = :id GROUP BY `server_ip`, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H") ORDER BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
 	$database->bind(':id', $_GET['id']);
 	$connections = $database->resultset();
 }

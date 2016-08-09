@@ -92,7 +92,7 @@ $id = $_GET['id'];
 <?php if ($id == "l"): ?>
 <?php 
 
-	$database->query('SELECT COUNT(`auth`) AS total, `country` FROM `player_analytics` WHERE `server_ip` = :ip GROUP BY `country` ORDER BY total DESC');
+	$database->query('SELECT COUNT(`auth`) AS total, `country` FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip GROUP BY `country` ORDER BY total DESC');
 	$database->bind(':ip', $server);
 	$regions = $database->resultset();
 
