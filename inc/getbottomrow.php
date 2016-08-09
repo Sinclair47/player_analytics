@@ -38,7 +38,7 @@ if (isset($_GET['server'])) {
 	$database->bind(':ip', $server_ip);
 	$method = $database->resultset();
 
-	$database->query('SELECT `premium` AS label, COUNT(`premium`) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
+	$database->query('SELECT `premium` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
 	$database->bind(':start', $date[0]);
 	$database->bind(':end', $date[1]);
 	$database->bind(':ip', $server_ip);
@@ -56,7 +56,7 @@ else {
 	$database->bind(':end', $date[1]);
 	$method = $database->resultset();
 
-	$database->query('SELECT `premium` AS label, COUNT(`premium`) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
+	$database->query('SELECT `premium` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
 	$database->bind(':start', $date[0]);
 	$database->bind(':end', $date[1]);
 	$premium = $database->resultset();
@@ -158,9 +158,12 @@ if(isset($methods)) {
 foreach ($premium as $key => $value) {
 	if ($value['label'] == '1') {
 		$value['label'] = 'Premium';
+	} 
+	elseif ($value['label'] == '0') {
+		$value['label'] = 'F2P';
 	}
 	else {
-		$value['label'] = 'F2P';
+		$value['label'] = 'Unknown';
 	}
 	$premium[$key]['label'] = $value['label'];
 	if(!$p_total == 0)
