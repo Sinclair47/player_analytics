@@ -195,105 +195,106 @@ else {
 	var query = "<?php echo $_GET['server']; ?>";
 		$(document).ready(function() {
 			$("#bottomrow").load("inc/getbottomrow.php?server="+query);
-		});
-		function data(dates){
+
+			function data(dates){
+					$.ajax({
+						type: "GET",
+						dataType: 'json',
+						url: "inc/getdashboardrange.php?server="+query, // This is the URL to the API
+						data: "id=" + dates,
+						beforeSend: function(){
+							$('#overlay').fadeIn("fast");
+						},
+						success: function(msg){
+							$('#overlay').fadeOut("fast");
+							chart.setData(msg);
+						}
+					})
+				}
+			$('#reportrange').daterangepicker(
+				{
+					ranges: {
+						'Today': [moment(), moment()],
+						'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+						'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+						'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+						'This Month': [moment().startOf('month'), moment().endOf('month')],
+						'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+					},
+					startDate: moment().subtract(6, 'days'),
+					endDate: moment()
+				},
+				function(start, end) {
+					$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+				}
+			);
+			$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+				var dates = picker.startDate.format('YYYY-M-D')+","+picker.endDate.format('YYYY-M-D');
+				data(dates);
 				$.ajax({
 					type: "GET",
-					dataType: 'json',
-					url: "inc/getdashboardrange.php?server="+query, // This is the URL to the API
-					data: "id=" + dates,
-					beforeSend: function(){
-						$('#overlay').fadeIn("fast");
-					},
+					url: "inc/getbottomrow.php?server="+query,
+					data: 'id=' + picker.startDate.format('YYYY-M-D')+","+picker.endDate.format('YYYY-M-D'),
 					success: function(msg){
-						$('#overlay').fadeOut("fast");
-						chart.setData(msg);
+						$('#bottomrow').empty();
+						$('#bottomrow').html(msg);
 					}
-				})
-			}
-		$('#reportrange').daterangepicker(
-			{
-				ranges: {
-					'Today': [moment(), moment()],
-					'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-					'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-					'This Month': [moment().startOf('month'), moment().endOf('month')],
-					'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-				},
-				startDate: moment().subtract(6, 'days'),
-				endDate: moment()
-			},
-			function(start, end) {
-				$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-			}
-		);
-		$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-			var dates = picker.startDate.format('YYYY-M-D')+","+picker.endDate.format('YYYY-M-D');
-			data(dates);
-			$.ajax({
-				type: "GET",
-				url: "inc/getbottomrow.php?server="+query,
-				data: 'id=' + picker.startDate.format('YYYY-M-D')+","+picker.endDate.format('YYYY-M-D'),
-				success: function(msg){
-					$('#bottomrow').empty();
-					$('#bottomrow').html(msg);
-				}
+				});
 			});
-		});
-		var chart =  Morris.Area ({
-			element: 'chart',
-			data: data(moment().subtract('days', 6).format('YYYY-M-D')+","+moment().format('YYYY-M-D')),
-			xkey: 'time',
-			ykeys: ['total'],
-			labels: ['Total'],
-			barRatio: 0.4,
-			xLabelAngle: 0,
-			hideHover: 'auto',
-			parseTime: false,
-			resize: true
-		}).on('click', function(i, row){
-			$('#modal').modal('show');
-			$.ajax({
-				type: "GET",
-				url: "inc/getdateinfo.php?server="+query,
-				data: 'id='+row['d'],
-				success: function(msg){
-					$('#modal').html(msg);
-				}
+			var chart =  Morris.Area ({
+				element: 'chart',
+				data: data(moment().subtract('days', 6).format('YYYY-M-D')+","+moment().format('YYYY-M-D')),
+				xkey: 'time',
+				ykeys: ['total'],
+				labels: ['Total'],
+				barRatio: 0.4,
+				xLabelAngle: 0,
+				hideHover: 'auto',
+				parseTime: false,
+				resize: true
+			}).on('click', function(i, row){
+				$('#modal').modal('show');
+				$.ajax({
+					type: "GET",
+					url: "inc/getdateinfo.php?server="+query,
+					data: 'id='+row['d'],
+					success: function(msg){
+						$('#modal').html(msg);
+					}
+				});
 			});
-		});
-		$(document).on("click","#unique",function(){
-			$('#modal').modal('show');
-			$.ajax({
-				type: "GET",
-				url: "inc/getserverinfo.php?id=u&server="+query,
-				success: function(msg){
-					$('#modal').empty();
-					$('#modal').html(msg);
-				}
+			$('#unique').on('click', function() {
+				$('#modal').modal('show');
+				$.ajax({
+					type: "GET",
+					url: "inc/getserverinfo.php?id=u&server="+query,
+					success: function(msg){
+						$('#modal').empty();
+						$('#modal').html(msg);
+					}
+				});
 			});
-		});
-		$(document).on("click","#connections",function(){
-			$('#modal').modal('show');
-			$.ajax({
-				type: "GET",
-				url: "inc/getserverinfo.php?id=c&server="+query,
-				success: function(msg){
-					$('#modal').empty();
-					$('#modal').html(msg);
-				}
+			$('#connections').on("click",function(){
+				$('#modal').modal('show');
+				$.ajax({
+					type: "GET",
+					url: "inc/getserverinfo.php?id=c&server="+query,
+					success: function(msg){
+						$('#modal').empty();
+						$('#modal').html(msg);
+					}
+				});
 			});
-		});
-		$(document).on("click","#regions",function(){
-			$('#modal').modal('show');
-			$.ajax({
-				type: "GET",
-				url: "inc/getserverinfo.php?id=l&server="+query,
-				success: function(msg){
-					$('#modal').empty();
-					$('#modal').html(msg);
-				}
+			$('#regions').on("click",function(){
+				$('#modal').modal('show');
+				$.ajax({
+					type: "GET",
+					url: "inc/getserverinfo.php?id=l&server="+query,
+					success: function(msg){
+						$('#modal').empty();
+						$('#modal').html(msg);
+					}
+				});
 			});
 		});
 	</script>
