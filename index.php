@@ -133,8 +133,12 @@ $servers = $database->resultset();
 		$(document).ready(function() {
 			$( "#content" ).load( "inc/getdashboard.php" );
 
-			$("#servers li a").click(function() { // Server list
+			$("#side-menu a").click(function() {
 				$("#servers li a").removeClass('active fa fa-arrow-circle-right');
+				$("#side-menu a").removeClass('active');
+				$(this).addClass('active');
+			});
+			$("#servers li a").click(function() { // Server list
 				$(this).addClass('active fa fa-arrow-circle-right');
 			});
 		});
