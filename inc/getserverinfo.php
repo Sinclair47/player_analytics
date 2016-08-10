@@ -133,7 +133,7 @@ $id = $_GET['id'];
 		$(document).ready(function() {
 			var query = "<?php echo $_GET['server']; ?>";
 			var players = $('#players').DataTable( {
-				"processing": false,
+				"processing": true,
 				"serverSide": true,
 				"ajax": "inc/server_processing.php?type=c&server="+query,
 				"columns": [

@@ -48,7 +48,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 <script type="text/javascript">
 	$(document).ready(function() {
 		var players = $('#players').DataTable( {
-			"processing": false,
+			"processing": true,
 			"serverSide": true,
 			"ajax": "inc/server_processing.php?type=getconnections",
 			"columns": [

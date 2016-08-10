@@ -11,7 +11,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 
 include 'config.php';
 
-$sql_details = array(
+$db_conn = array(
     'user' => DB_USER,
     'pass' => DB_PASS,
     'db'   => DB_NAME,
@@ -19,9 +19,10 @@ $sql_details = array(
     'port' => DB_PORT
 );
 
+$table = DB_TABLE_PA;
+
 if (isset($_GET['type']) && $_GET['type'] == 'getconnections') {
 
-    $table = 'player_analytics';
     $primaryKey = 'id';
      
     $columns = array(
@@ -83,20 +84,17 @@ if (isset($_GET['type']) && $_GET['type'] == 'getconnections') {
         )
     );
 
-    $joinQuery = '';
-
     require('ssp.class.php');
 
     echo json_encode(
-        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery)
+        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '')
     );
 }
 
-if (isset($_GET['type']) && $_GET['type'] == 'getplayers') {
+if (isset($_GET['type']) && ($_GET['type'] == 'getplayers' || $_GET['type'] == 'getstaff')) {
 
-    $table = 'player_analytics';
     $primaryKey = 'id';
-     
+    #print_r($_GET); die;
     $columns = array(
         array(
             'db'        => 'id',
@@ -153,25 +151,28 @@ if (isset($_GET['type']) && $_GET['type'] == 'getplayers') {
             'dt'        => 'os'
         ),
         array(
-            'db'        => 'server_ip',
-            'dt'        => 'server_ip'
-        )
+            'db'        => 'flags',
+            'dt'        => 'flags'
+        ),
     );
 
-    $joinQuery = '';
-    $extraCondition = '';
+    $where = '';
     $groupBy = "GROUP BY auth";
+
+    if($_GET['type'] == 'getstaff') {
+        $where = 'flags != "" ';
+        $groupBy = "GROUP BY auth, flags";
+    }   
 
     require('ssp.class.php');
 
     echo json_encode(
-        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraCondition, $groupBy)
+        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy, $where)
     );
 }
 
 if (isset($_GET['type']) && $_GET['type'] == 'getcountryinfo') {
 
-    $table = 'player_analytics';
     $primaryKey = 'id';
      
     $columns = array(
@@ -215,19 +216,17 @@ if (isset($_GET['type']) && $_GET['type'] == 'getcountryinfo') {
         )
     );
 
-    $joinQuery = '';
     $extraCondition = "`country_code` = '".$_GET['id']."'";
 
     require('ssp.class.php');
 
     echo json_encode(
-        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraCondition)
+        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition)
     );
 }
 
-if (isset($_GET['type']) && $_GET['type'] == 'c') {
+if (isset($_GET['type']) && $_GET['type'] == 'c') { // connections for single server View
 
-    $table = 'player_analytics';
     $primaryKey = 'id';
      
     $columns = array(
@@ -289,21 +288,18 @@ if (isset($_GET['type']) && $_GET['type'] == 'c') {
         )
     );
 
-    $joinQuery = '';
-    $extraCondition = "`server_ip` = '".$_GET['server']."'";
+    $where = "`server_ip` = '".$_GET['server']."'";
 
     require('ssp.class.php');
 
     echo json_encode(
-        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraCondition)
+        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy = '', $where)
     );
 }
 
-if (isset($_GET['type']) && $_GET['type'] == 'u') {
+if (isset($_GET['type']) && $_GET['type'] == 'u') { // Unique Players for single server View
 
-    $table = 'player_analytics';
     $primaryKey = 'id';
-     
     $columns = array(
         array(
             'db'        => 'id',
@@ -365,13 +361,12 @@ if (isset($_GET['type']) && $_GET['type'] == 'u') {
         )
     );
 
-    $joinQuery = '';
-    $extraCondition = "`server_ip` = '".$_GET['server']."'";
+    $where = "`server_ip` = '".$_GET['server']."'";
     $groupBy = "GROUP BY auth";
 
     require('ssp.class.php');
 
     echo json_encode(
-        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraCondition, $groupBy)
+        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy, $where)
     );
 }

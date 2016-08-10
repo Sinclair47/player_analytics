@@ -33,7 +33,6 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 												<th><i class="fa fa-usd"></i></th>
 												<th><i class="fa fa-html5"></i></th>
 												<th>OS</th>
-												<th>Server</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -48,7 +47,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 <script type="text/javascript">
 	$(document).ready(function() {
 		var players = $('#players').DataTable( {
-			"processing": false,
+			"processing": true,
 			"serverSide": true,
 			"ajax": "inc/server_processing.php?type=getplayers",
 			"columns": [
@@ -56,13 +55,12 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 				{ "data": "name" },
 				{ "data": "auth", "visible" : false },
 				{ "data": "total" },
-				{ "data": "duration" },
+				{ "data": "duration", "searchable" : false },
 				{ "data": "connect_time" },
 				{ "data": "country" },
 				{ "data": "premium" },
 				{ "data": "html_motd_disabled" },
-				{ "data": "os" },
-				{ "data": "server_ip", "visible" : false, "searchable" : true }
+				{ "data": "os" }
 			],
 			"order": [[3, 'desc']]
 		});

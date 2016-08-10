@@ -141,37 +141,36 @@ $servers = $database->resultset();
 			$("#servers li a").click(function() { // Server list
 				$(this).addClass('active fa fa-arrow-circle-right');
 			});
-		});
-		$(document).on("click",".menu",function(){
-			$.ajax({
-				type: "GET",
-				url: "inc/"+ $(this).find("input").val()+".php",
-				beforeSend: function(){
-					$('#overlay').fadeIn("fast");
-					$('#content').empty();
-					$('.jvectormap-label').detach();
-					$('.daterangepicker').detach();
-				},
-				success: function(msg){
-					$('#content').delay(400).fadeIn("slow").html(msg);
-					$('#overlay').delay(400).fadeOut( "slow" );
-				}
+			$('.menu').on('click', function() {
+				$.ajax({
+					type: "GET",
+					url: "inc/"+ $(this).find("input").val()+".php",
+					beforeSend: function(){
+						$('#overlay').fadeIn("slow");
+						$('#content').empty();
+						$('.jvectormap-label').detach();
+						$('.daterangepicker').detach();
+					},
+					success: function(msg){
+						$('#content').delay(400).fadeIn("slow").html(msg);
+						$('#overlay').delay(400).fadeOut( "slow" );
+					}
+				});
 			});
-		});
-		$(document).on("click",".menu_server",function(){
-			$.ajax({
-				type: "GET",
-				url: "inc/getdashboard.php?server="+ $(this).find("input").val(),
-				beforeSend: function(){
-					$('#overlay').fadeIn("fast");
-					$('#content').empty();
-					$('.jvectormap-label').detach();
-					$('.daterangepicker').detach();
-				},
-				success: function(msg){
-					$('#content').delay(400).fadeIn("slow").html(msg);
-					$('#overlay').delay(400).fadeOut( "slow" );
-				}
+			$('.menu_server').on('click', function() {
+				$.ajax({
+					type: "GET",
+					url: "inc/getdashboard.php?server="+ $(this).find("input").val(),
+					beforeSend: function(){
+						$('#overlay').fadeIn("slow");
+						$('#content').empty();
+						$('.jvectormap-label').detach();
+						$('.daterangepicker').detach();
+					},
+					success: function(msg){
+						$('#content').html(msg);
+					}
+				});
 			});
 		});
 	</script>

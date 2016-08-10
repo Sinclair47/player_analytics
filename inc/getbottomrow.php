@@ -232,19 +232,21 @@ $premium = json_encode($premium);
 	});
 </script>
 <script type="text/javascript">
-	$(document).on("click",".btn-block",function(){
-		$.ajax({
-			type: "GET",
-			url: "inc/"+ $(this).find("input").val()+".php",
-			beforeSend: function(){
-				$('#overlay').fadeIn("fast");
-				$('#content').empty();
-				$('.daterangepicker').detach();
-			},
-			success: function(msg){
-				$('#content').delay(400).fadeIn("slow").html(msg);
-				$('#overlay').delay(400).fadeOut( "slow" );
-			}
+	$(document).ready(function() {
+		$('.btn-block').on('click', function() {
+			$.ajax({
+				type: "GET",
+				url: "inc/"+ $(this).find("input").val()+".php",
+				beforeSend: function(){
+					$('#overlay').fadeIn("fast");
+					$('#content').empty();
+					$('.daterangepicker').detach();
+				},
+				success: function(msg){
+					$('#content').delay(400).fadeIn("slow").html(msg);
+					$('#overlay').delay(400).fadeOut( "slow" );
+				}
+			});
 		});
 	});
 </script>

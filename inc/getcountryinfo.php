@@ -43,7 +43,7 @@ $id = $_GET['id'];
 <script type="text/javascript">
 	$(document).ready(function() {
 		var players = $('#players').DataTable( {
-			"processing": false,
+			"processing": true,
 			"serverSide": true,
 			"ajax": "inc/server_processing.php?type=getcountryinfo&id=<?php echo $id; ?>",
 			"pagingType": "full",

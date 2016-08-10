@@ -190,6 +190,7 @@ class SSP {
 
         if ( $where !== '' && $groupBy !== '' ) {
             $where = 'HAVING '.$where;
+            #$where = 'WHERE '.$where;
         }
 
         return $where;
@@ -214,7 +215,7 @@ class SSP {
      *  @return array  Server-side processing response array
      *
      */
-    static function simple ( $request, $sql_details, $table, $primaryKey, $columns, $joinQuery = NULL, $extraWhere = '', $groupBy = '')
+    static function simple ( $request, $sql_details, $table, $primaryKey, $columns, $joinQuery = NULL, $extraWhere = '', $groupBy = '', $where2 = '')
     {
         $bindings = array();
         $db = SSP::sql_connect( $sql_details );
@@ -232,14 +233,27 @@ class SSP {
             $extraWhere = ($where) ? ' AND '.$extraWhere : ' WHERE '.$extraWhere;
         }
 
+        #my WHERE hack
+        $add_where = '';
+        
+        if(!empty($where2)) {
+           
+            $add_where = " WHERE ";
+        }
+        if(!empty($where2)) {
+            $add_where .= " ".$where2." ";
+        }
+
         // Main query to actually get the data
         if($joinQuery){
             
             $col = SSP::pluck($columns, 'db', $joinQuery);
 
             if ($groupBy !== '') {
+               # echo "b1 ";
                 $query =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $col)."
                  $joinQuery
+                 $add_where
                  $groupBy
                  $where
                  $extraWhere
@@ -247,9 +261,11 @@ class SSP {
                  $limit";
             } 
             else {
+               # echo "b2 ";
                 $query =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $col)."
                  $joinQuery
                  $where
+                 $add_where
                  $extraWhere
                  $order
                  $limit";
@@ -257,8 +273,10 @@ class SSP {
         }
         else{
             if ($groupBy !== '') {
+                #echo "b3 ";
             $query =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", SSP::pluck($columns, 'db'))."
              FROM `$table`
+             $add_where
              $groupBy
              $where
              $extraWhere
@@ -266,9 +284,11 @@ class SSP {
              $limit";
             }
             else {
+              #  echo "b4 ";
             $query =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", SSP::pluck($columns, 'db'))."
              FROM `$table`
              $where
+             $add_where
              $extraWhere
              $order
              $limit"; 
@@ -355,6 +375,7 @@ class SSP {
 
         $stmt = $db->prepare( $sql );
         #echo $sql;
+	    #print_r($sql); die;
 
         // Bind parameters
         if ( is_array( $bindings ) ) {
