@@ -86,7 +86,7 @@ $servers = $database->resultset();
 							<a href="#/stats/staff"><i class="fa fa-shield fa-fw"></i> Staff</a>
 						</li>
 						<li class="menu">
-							<a href="#/stats/maps"><i class="fa fa-shield fa-fw"></i> Maps</a>
+							<a href="#/stats/maps"><i class="fa fa-map-marker fa-fw"></i> Maps</a>
 						</li>
 						<li>
 							<a data-toggle="collapse" data-target="#servers"><i class="fa fa-tasks fa-fw"></i> Servers <button type="button" class="btn btn-info btn-xs pull-right "><?php echo count($servers) ?></button></a>
