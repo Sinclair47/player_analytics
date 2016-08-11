@@ -42,6 +42,10 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 							</div><!-- /.panel-heading -->
 							<div class="panel-body">
 								<div style="padding:10px">
+									<div class="panel-body">
+										<p>Here you can see your flagged Users. The Users are grouped by steam id and flags. Click on a row to see all records for a specific User.</p>
+									</div>
+
 									<table id="staff" class="table table-bordered table-striped table-condensed display" style="cursor:pointer">
 										<thead>
 											<tr>
