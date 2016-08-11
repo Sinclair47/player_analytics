@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## 2015-08-11
 ### Added
 - Staff page: Show only players with flags
 - Mark the current nav element as active
