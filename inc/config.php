@@ -1,18 +1,11 @@
 <?php
-include('util.php');
+require_once 'util.php' ;
+require_once 'config_db.php' ;
 
 //Set encoding
 ini_set('default_charset', 'utf-8');
 
-//Database Info
-define("DB_HOST",  'localhost');
-define("DB_USER",  'USER');
-define("DB_PASS",  'PASSWORD');
-define("DB_NAME",  'DATABASE');
-define("DB_PORT",  '3306');
-
-$Home = "/";
-$Title = "Title";
+$Title = "Player Analytics";
 $Show_Max_Countries = 10; # Top 10 Countries
 
 const STEAM_APIKEY  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
@@ -31,8 +24,7 @@ $server_names = array(
 
 ## DO NOT TOUCH ANYTHING BELOW HERE ! ##
 
-define("DB_TABLE_PA", "player_analytics");
-#define("DB_TABLE_PA", "pax");
+
 
 function ServerName($key, $server_names)
 {
