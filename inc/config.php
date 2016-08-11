@@ -20,7 +20,7 @@ $server_names = [
     
 ];
 
-# Replace flags like z, abc with a name lile VIP, Admin etc.
+# Replace flags like z, bce with a name like VIP, Admin etc.
 $staff_group_names = [
     #"z"   => "Super Admin (z)",
     #"bce"  => "VIP (bce)",
