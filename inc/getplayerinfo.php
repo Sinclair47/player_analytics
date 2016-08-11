@@ -80,7 +80,7 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 												<td style="text-align:center;"><?php echo $info['numplayers']; ?></td>
 												<td style="text-align:right;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?php echo $info['map']; ?></td>
 												<td style="text-align:right;"><?php echo ConnMethod($info['connect_method']); ?></td>
-												<td style="text-align:right;"><?php echo $info['flags']; ?></td>
+												<td style="text-align:right;"><?php echo FlagToName($info['flags'], $staff_group_names); ?></td>
 												<td style="text-align:right;"><?php echo $info['ip']; ?></td>
 											</tr>
 						<?php endforeach ?>
