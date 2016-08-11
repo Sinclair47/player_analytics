@@ -152,7 +152,10 @@ if (isset($_GET['type']) && ($_GET['type'] == 'getplayers' || $_GET['type'] == '
         ),
         array(
             'db'        => 'flags',
-            'dt'        => 'flags'
+            'dt'        => 'flags',
+            'formatter' => function( $d, $row ) use (&$staff_group_names) {
+                return FlagToName($d, $staff_group_names);
+            }
         ),
     );
 
@@ -161,6 +164,14 @@ if (isset($_GET['type']) && ($_GET['type'] == 'getplayers' || $_GET['type'] == '
 
     if($_GET['type'] == 'getstaff') {
         $where = 'flags != "" ';
+        if(!empty($staff_whitelist)) {
+            $where .= " AND (";
+            foreach($staff_whitelist as $flag) {
+                $where .= "flags = '".$flag."' OR ";
+            }
+            $where = rtrim(rtrim($where, " "), "OR");
+            $where .= ")";
+        }
         $groupBy = "GROUP BY auth, flags";
     }   
 

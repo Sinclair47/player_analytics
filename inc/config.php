@@ -11,19 +11,36 @@ $Show_Max_Countries = 10; # Top 10 Countries
 const STEAM_APIKEY  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
 #optional - replace ip with your server name
-$server_names = array(
+$server_names = [
     "your_ip:port"  => "Server name",
     "2.2.2.2"       => "TRADE & IDLE SERVER",
     "3.3.3.3:20715" => "WaffleTown",
     "4.4.4.4"       => "Chew Chew Train - 24/7 ChewChew",
     "5.5.5.5"       => "Black Server",
     
-  );
+];
+
+# Replace flags like z, abc with a name lile VIP, Admin etc.
+$staff_group_names = [
+    #"z"   => "Super Admin (z)",
+    #"bce"  => "VIP (bce)",
+];
+
+
+# Show only the records with the following flags:
+$staff_whitelist = [
+    #"z",
+    #"abc",
+];
 
 
 
 ## DO NOT TOUCH ANYTHING BELOW HERE ! ##
 
+#quick check
+if(!is_array($server_names) || !is_array($staff_group_names) || !is_array($staff_group_names)) {
+  die("You have an error in your config");
+}
 
 
 function ServerName($key, $server_names)
@@ -95,6 +112,13 @@ function PlaytimeConDashboard($seconds) {
   	$dtF = new \DateTime('@0');
     $dtT = new \DateTime("@$seconds");
     return $dtF->diff($dtT)->format($date_format);
+}
+
+function FlagToName($flags, $staff_group_names) {
+  if (array_key_exists($flags, $staff_group_names)) {
+    return $staff_group_names[$flags];
+  }
+  return $flags;
 }
 
 function ConnMethod($key) 
