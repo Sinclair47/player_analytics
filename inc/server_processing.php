@@ -9,7 +9,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
     die();
 }
 
-include 'config.php';
+require_once 'config.php';
 
 $db_conn = array(
     'user' => DB_USER,

@@ -1,10 +1,10 @@
 <?php 
 
 //Database Info
-include 'inc/config.php';
+require_once 'inc/config.php';
 
 // Include database class
-include 'inc/database.class.php';
+require_once 'inc/database.class.php';
 
 // Instantiate database.
 $database = new Database();
@@ -20,7 +20,7 @@ $servers = $database->resultset();
 	<meta charset="utf-8">
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
-	<title>Player Analytics</title>
+	<title><?php echo $Title ?></title>
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="css/dataTables.bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="css/sb-admin-2.css" rel="stylesheet" type="text/css">

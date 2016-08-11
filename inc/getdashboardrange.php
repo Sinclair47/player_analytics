@@ -7,10 +7,10 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 }
 
 //Database Info
-include 'config.php';
+require_once 'config.php';
 
 // Include database class
-include 'database.class.php';
+require_once 'database.class.php';
 
 if (!isset($_GET['id'])) {
 	$_GET['id'] = date("Y-m-d", strtotime('-7 day')).",".date("Y-m-d");

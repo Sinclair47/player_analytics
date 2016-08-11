@@ -7,7 +7,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 }
 
 //Database Info
-include 'config.php';
+require_once 'config.php';
 ?>
 			<div class="row">
 				<div class="col-lg-12">

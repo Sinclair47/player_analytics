@@ -4,12 +4,13 @@ https://forums.alliedmods.net/showthread.php?t=230832
 
 forked from Sinclair47/player_analytics https://github.com/Sinclair47/player_analytics
 
-##How to install?
+## How to install?
 Download as zip (or clone) and copy all files to your webserver.  
-Add your DB credentials in config.php.   
+Rename the file config_db_RENAME_ME.php to config_db.php in /inc and add your DB credentials.  
+ 
 That's it!
 
-##Connect method
+## Connect method
 > ### What is the difference between Quickplay and Quickpick?
 > **Quickplay** = You click a button and get placed into a random server that has QP enabled  
 > **Quickpick** = You get presented a list of servers that have QP enabled, where you have to click "connect" yourself.
@@ -26,7 +27,7 @@ That's it!
 > 
 > _Quote from Dr. McKay - https://forums.alliedmods.net/showpost.php?p=2350131&postcount=256_
 
-##Todo
+## Todo
 * Remove/replace "Hours Played" box with something more usefull.
 * Add a simple cache function
 * Add area charts to see changes over time

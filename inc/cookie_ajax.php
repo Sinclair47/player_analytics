@@ -1,6 +1,6 @@
 <?php
 
-include('util.php');
+require_once 'util.php';
 
 #set ip
 if(isset($_GET['server'])) { #server should be ip:port
