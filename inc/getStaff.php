@@ -2,8 +2,8 @@
 
 if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') 
 {
-    #header("Location: ../index.php?error=".urlencode("Direct access not allowed."));
-    #die();
+    header("Location: ../index.php?error=".urlencode("Direct access not allowed."));
+    die();
 }
 
  ?>
@@ -46,7 +46,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 										<p>Here you can see your flagged Users. The Users are grouped by steam id and flags. Click on a row to see all records for a specific User.</p>
 									</div>
 
-									<table id="staff" class="table table-bordered table-striped table-condensed display" style="cursor:pointer">
+									<table id="staff" class="table table-hover table-bordered table-striped table-condensed display" style="cursor:pointer">
 										<thead>
 											<tr>
 												<th>ID</th>
@@ -92,19 +92,20 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 			],
 			"order": [[9, 'desc']]
 		});
-		$('#staff tbody').on('click', 'tr', function () {
-			$.ajax({
-				type: "GET",
-				url: "inc/getplayerinfo.php",
-				data: 'id='+staff.cell(this, 2).data(),
-				beforeSend: function(){
-					$('#overlay').fadeIn();
-				},
-				success: function(msg){
-					$('#content').html(msg);
-					$('#overlay').fadeOut();
-				}
-			});
+		$('#staff tbody').on('click', 'tr', function () {	
+			window.location.href = '#/stats/players/info/' + staff.cell(this, 2).data();
+			// $.ajax({
+			// 	type: "GET",
+			// 	url: "inc/getplayerinfo.php",
+			// 	data: 'id='+staff.cell(this, 2).data(),
+			// 	beforeSend: function(){
+			// 		$('#overlay').fadeIn();
+			// 	},
+			// 	success: function(msg){
+			// 		$('#content').html(msg);
+			// 		$('#overlay').fadeOut();
+			// 	}
+			// });
 		});
 	});
 </script>

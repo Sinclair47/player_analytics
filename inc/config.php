@@ -1,4 +1,5 @@
 <?php
+include('util.php');
 
 //Set encoding
 ini_set('default_charset', 'utf-8');

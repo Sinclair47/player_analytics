@@ -23,9 +23,8 @@ $p_total = 0;
 
 // Instantiate database.
 $database = new Database();
-
-if (isset($_GET['server'])) {
-	$server_ip = $_GET['server'];
+$server_ip = Util::getCookie("server");
+if (isset($server_ip)) {
 	$database->query('SELECT `country` AS label, COUNT(`country`) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `country`');
 	$database->bind(':start', $date[0]);
 	$database->bind(':end', $date[1]);
@@ -183,7 +182,7 @@ $premium = json_encode($premium);
 							</div>
 							<div class="panel-body">
 								<div id="country"></div>
-								<a class="btn btn-default btn-block"><input type="hidden" value="getlocation"/>View Details</a>
+								<a href="#/stats/locations" class="btn btn-default btn-block"><input type="hidden" value="getlocation"/>View Details</a>
 
 							</div><!-- /.panel-body -->
 						</div><!-- /.panel -->
@@ -195,7 +194,7 @@ $premium = json_encode($premium);
 							</div>
 							<div class="panel-body">
 								<div id="method"></div>
-								<a class="btn btn-default btn-block"><input type="hidden" value="getconnections"/>View Details</a>
+								<a href="#/stats/connections" class="btn btn-default btn-block"><input type="hidden" value="getconnections"/>View Details</a>
 							</div><!-- /.panel-body -->
 						</div><!-- /.panel -->
 					</div><!-- /.col-lg-4 -->
@@ -206,7 +205,7 @@ $premium = json_encode($premium);
 							</div>
 							<div class="panel-body">
 								<div id="premium"></div>
-								<a class="btn btn-default btn-block"><input type="hidden" value="getplayers"/>View Details</a>
+								<a href="#/stats/players" class="btn btn-default btn-block"><input type="hidden" value="getplayers"/>View Details</a>
 							</div><!-- /.panel-body -->
 						</div><!-- /.panel -->
 					</div><!-- /.col-lg-4 -->
@@ -232,21 +231,22 @@ $premium = json_encode($premium);
 	});
 </script>
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('.btn-block').on('click', function() {
-			$.ajax({
-				type: "GET",
-				url: "inc/"+ $(this).find("input").val()+".php",
-				beforeSend: function(){
-					$('#overlay').fadeIn("fast");
-					$('#content').empty();
-					$('.daterangepicker').detach();
-				},
-				success: function(msg){
-					$('#content').delay(400).fadeIn("slow").html(msg);
-					$('#overlay').delay(400).fadeOut( "slow" );
-				}
-			});
-		});
-	});
+// TODO remove
+	// $(document).ready(function() {
+	// 	$('.btn-block').on('click', function() {
+	// 		$.ajax({
+	// 			type: "GET",
+	// 			url: "inc/"+ $(this).find("input").val()+".php",
+	// 			beforeSend: function(){
+	// 				$('#overlay').fadeIn("fast");
+	// 				$('#content').empty();
+	// 				$('.daterangepicker').detach();
+	// 			},
+	// 			success: function(msg){
+	// 				$('#content').delay(400).fadeIn("slow").html(msg);
+	// 				$('#overlay').delay(400).fadeOut( "slow" );
+	// 			}
+	// 		});
+	// 	});
+	// });
 </script>

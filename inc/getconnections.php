@@ -20,7 +20,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 							</div><!-- /.panel-heading -->
 							<div class="panel-body">
 								<div style="padding:10px">
-									<table id="players" class="table table-bordered table-striped table-condensed display" style="cursor:pointer">
+									<table id="players" class="table table-hover table-bordered table-striped table-condensed display" style="cursor:pointer">
 										<thead>
 											<tr>
 												<th>ID</th>
@@ -67,18 +67,19 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 			"order": [[0, 'desc']]
 		});
 		$('#players tbody').on('click', 'tr', function () {
-			$.ajax({
-				type: "GET",
-				url: "inc/getplayerinfo.php",
-				data: 'id='+players.cell(this, 2).data(),
-				beforeSend: function(){
-					$('#overlay').fadeIn();
-				},
-				success: function(msg){
-					$('#content').html(msg);
-					$('#overlay').fadeOut();
-				}
-			});
+			window.location.href = '#/stats/players/info/' + players.cell(this, 2).data();
+			// $.ajax({
+			// 	type: "GET",
+			// 	url: "inc/getplayerinfo.php",
+			// 	data: 'id='+players.cell(this, 2).data(),
+			// 	beforeSend: function(){
+			// 		$('#overlay').fadeIn();
+			// 	},
+			// 	success: function(msg){
+			// 		$('#content').html(msg);
+			// 		$('#overlay').fadeOut();
+			// 	}
+			// });
 		});
 	});
 </script>

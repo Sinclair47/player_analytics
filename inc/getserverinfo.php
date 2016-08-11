@@ -30,7 +30,7 @@ $id = $_GET['id'];
 				<h4 class="modal-title" id="myModalLabel"><?php echo $server; ?></h4>
 			</div>
 			<div class="modal-body">
-				<table id="players" class="table table-bordered table-striped table-condensed display" style="cursor:pointer">
+				<table id="players" class="table table-hover table-bordered table-striped table-condensed display" style="cursor:pointer">
 					<thead>
 						<tr>
 							<th>ID</th>

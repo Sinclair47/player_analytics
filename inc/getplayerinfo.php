@@ -42,11 +42,11 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 										<img src="<?php echo $profile['avatarfull']; ?>" alt="<?php echo $profile['personaname']; ?>">
 									</a>
 									<h4>SteamID</h4>
-									<span class="badge-profile"><?php echo $info[0]['auth']; ?></span>
+									<span class="badge-profile"><?php echo @$info[0]['auth']; ?></span>
 									<h4>Location</h4>
-									<span class="badge-profile"><?php echo $info[0]['country']; ?></span>
+									<span class="badge-profile"><?php echo @$info[0]['country']; ?></span>
 									<h4>OS</h4>
-									<span class="badge-profile"><?php echo $info[0]['os']; ?></span>
+									<span class="badge-profile"><?php echo @$info[0]['os']; ?></span>
 								</div>
 							</div><!-- /.panel-body -->
 						</div><!-- /.panel -->
@@ -58,7 +58,7 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 							</div><!-- /.panel-heading -->
 							<div class="panel-body">
 								<div style="padding:10px">
-									<table class="table table-bordered table-striped table-condensed" style="table-layout:fixed;width:100%;">
+									<table class="table table-hover table-bordered table-striped table-condensed" style="table-layout:fixed;width:100%;">
 										<thead>
 											<tr>
 												<th style="text-align:left;">Server </th>

@@ -15,8 +15,9 @@ include 'database.class.php';
 // Instantiate database.
 $database = new Database();
 
-if (isset($_GET['server'])) {
-	$server_ip = $_GET['server'];
+$server_ip = Util::getCookie("server");
+
+if (isset($server_ip)) {
 	$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip');
 	$database->bind(':ip', $server_ip);
 	$info = $database->single();
@@ -30,15 +31,15 @@ else {
 ?>
 				<div class="row">
 					<div class="col-lg-12">
-<?php if (isset($_GET['server'])): ?>
-	<h1 class="page-header">Dashboard - <?php echo $_GET['server']; ?></h1>
+<?php if (isset($server_ip)): ?>
+	<h1 class="page-header">Dashboard - <?php echo $server_ip; ?></h1>
 <?php else: ?>
 	<h1 class="page-header">Dashboard</h1>
 <?php endif ?>
 					</div><!-- /.col-lg-12 -->
 				</div><!-- /.row -->
 				<div class="row">
-<?php if (isset($_GET['server'])): ?>
+<?php if (isset($server_ip)): ?>
 					<div id="unique" class="col-lg-3 col-md-6" style="cursor:pointer">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
@@ -75,7 +76,7 @@ else {
 						</div>
 					</div>
 <?php endif ?>
-<?php if (isset($_GET['server'])): ?>
+<?php if (isset($server_ip)): ?>
 					<div id="connections" class="col-lg-3 col-md-6" style="cursor:pointer">
 						<div class="panel panel-green">
 							<div class="panel-heading">
@@ -112,7 +113,7 @@ else {
 						</div>
 					</div>
 <?php endif ?>
-<?php if (isset($_GET['server'])): ?>
+<?php if (isset($server_ip)): ?>
 					<div id="regions" class="col-lg-3 col-md-6" style="cursor:pointer">
 						<div class="panel panel-yellow">
 							<div class="panel-heading">
@@ -190,9 +191,9 @@ else {
 						
 					</div>
 				</div><!-- /.row -->
-<?php if (isset($_GET['server'])): ?>
+<?php if (isset($server_ip)): ?>
 	<script type="text/javascript">
-	var query = "<?php echo $_GET['server']; ?>";
+	var query = "<?php echo $server_ip; ?>";
 		$(document).ready(function() {
 			$("#bottomrow").load("inc/getbottomrow.php?server="+query);
 

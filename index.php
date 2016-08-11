@@ -65,34 +65,36 @@ $servers = $database->resultset();
 		<!-- Navigation -->
 		<nav class="navbar navbar-default navbar-fixed-top" style="margin-bottom: 0">
 			<div class="navbar-header">
-				<button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button> <a class="navbar-brand" href="index.php">Player Analytics</a>
+				<button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button> <a class="navbar-brand" href="#/">Player Analytics <span id="header_server_ip"></span></a>
 			</div><!-- /.navbar-header -->
 			<div id="sidebar" class="navbar-default sidebar">
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu" style="cursor:pointer">
 						<li class="menu">
-							<a><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-							<input type="hidden" value="getdashboard"/>
+							<a href="#/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
 						</li>
 						<li class="menu">
-							<a><i class="fa fa-globe fa-fw"></i> Locations</a>
-							<input type="hidden" value="getlocation"/>
+							<a href="#/stats/locations"><i class="fa fa-globe fa-fw"></i> Locations</a>
 						</li>
 						<li class="menu">
-							<a><i class="fa fa-chain fa-fw"></i> Connections</a>
-							<input type="hidden" value="getconnections"/>
+							<a href="#/stats/connections"><i class="fa fa-chain fa-fw"></i> Connections</a>
 						</li>
 						<li class="menu">
-							<a><i class="fa fa-group fa-fw"></i> Players</a>
-							<input type="hidden" value="getplayers"/>
+							<a href="#/stats/players"><i class="fa fa-group fa-fw"></i> Players</a>
 						</li>
 						<li class="menu">
-							<a><i class="fa fa-shield fa-fw"></i> Staff</a>
-							<input type="hidden" value="getStaff"/>
+							<a href="#/stats/staff"><i class="fa fa-shield fa-fw"></i> Staff</a>
+						</li>
+						<li class="menu">
+							<a href="#/stats/maps"><i class="fa fa-shield fa-fw"></i> Maps</a>
 						</li>
 						<li>
 							<a data-toggle="collapse" data-target="#servers"><i class="fa fa-tasks fa-fw"></i> Servers <button type="button" class="btn btn-info btn-xs pull-right "><?php echo count($servers) ?></button></a>
 							<ul id="servers" class="collapse nav">
+							<li class="menu_server">
+									<a> All servers</a>
+									<input type="hidden" value=""/>
+								</li>
 							<?php foreach ($servers as $server): ?>
 								<li class="menu_server">
 									<a> <?php echo ServerName($server['server_ip'], $server_names); ?></a>
@@ -116,22 +118,23 @@ $servers = $database->resultset();
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
 	</div><!-- /Modal -->
-
-	<!--<script src="js/jquery-1.11.0.js"></script> -->
 	<script src="js/jquery-3.1.0.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/moment.min.js"></script>
 	<script src="js/daterangepicker.js"></script>
+	<script src="js/signals.min.js"></script>
+	<script src="js/hasher.min.js"></script>
+	<script src="js/crossroads.min.js"></script>
 	<script src="js/plugins/morris/raphael.min.js"></script>
 	<script src="js/plugins/morris/morris.min.js"></script>
 	<script src="js/plugins/dataTables/jquery.dataTables.min.js"></script>
 	<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
 	<script src="js/plugins/jvectormaps/jquery-jvectormap-1.2.2.min.js"></script>
 	<script src="js/plugins/jvectormaps/jquery-jvectormap-world-merc-en.js"></script>
-
+	<script src="js/app.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$( "#content" ).load( "inc/getdashboard.php" );
+			//$( "#content" ).load( "inc/getdashboard.php" );
 
 			$("#side-menu a").click(function() {
 				$("#servers li a").removeClass('active fa fa-arrow-circle-right');
@@ -141,7 +144,7 @@ $servers = $database->resultset();
 			$("#servers li a").click(function() { // Server list
 				$(this).addClass('active fa fa-arrow-circle-right');
 			});
-			$('.menu').on('click', function() {
+		/*	$('.menu').on('click', function() {
 				$.ajax({
 					type: "GET",
 					url: "inc/"+ $(this).find("input").val()+".php",
@@ -156,23 +159,41 @@ $servers = $database->resultset();
 						$('#overlay').delay(400).fadeOut( "slow" );
 					}
 				});
-			});
+			});*/
 			$('.menu_server').on('click', function() {
-				$.ajax({
-					type: "GET",
-					url: "inc/getdashboard.php?server="+ $(this).find("input").val(),
-					beforeSend: function(){
-						$('#overlay').fadeIn("slow");
-						$('#content').empty();
-						$('.jvectormap-label').detach();
-						$('.daterangepicker').detach();
-					},
-					success: function(msg){
-						$('#content').html(msg);
-					}
-				});
+				var server_ip = $(this).find("input").val()
+				// $.ajax({
+				// 	type: "GET",
+				// 	url: "inc/cookie_ajax.php?server="+ server_ip,
+				// 	// beforeSend: function(){
+				// 	// 	$('#overlay').fadeIn("slow");
+				// 	// 	$('#content').empty();
+				// 	// 	$('.jvectormap-label').detach();
+				// 	// 	$('.daterangepicker').detach();
+				// 	// },
+				// 	success: function(msg){
+				// 		//$('#content').html(msg);
+				// 	}
+				// });
+
+				//console.log(server_ip);
+				setCookie("server", server_ip, 60); 
+				//deleteCookie("server");
+				location.reload();
 			});
 		});
+		function setCookie(cname,cvalue,exdays) {
+			var d = new Date();
+			d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			//console.log(d);
+			var expires = "expires=" + d.toGMTString();
+			var c = cname+"="+cvalue+"; "+expires + "; "+"/player_analytics"
+			document.cookie = c;
+			console.log(c);
+		}
+		function deleteCookie(cname) {
+			setCookie("server", "", -1, "/player_analytics");
+		}
 	</script>
 </body>
 </html>
