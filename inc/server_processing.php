@@ -288,12 +288,12 @@ if (isset($_GET['type']) && $_GET['type'] == 'c') { // connections for single se
         )
     );
 
-    $where = "`server_ip` = '".$_GET['server']."'";
+    $extraCondition = "`server_ip` = '".$_GET['server']."'";
 
     require('ssp.class.php');
 
     echo json_encode(
-        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy = '', $where)
+        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition, $groupBy = '', $where = '')
     );
 }
 
