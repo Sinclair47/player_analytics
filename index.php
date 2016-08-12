@@ -63,11 +63,11 @@ $servers = $database->resultset();
 <body>
 	<div id="wrapper">
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-fixed-top" style="margin-bottom: 0">
+		<nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
 			<div class="navbar-header">
 				<button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button> <a class="navbar-brand" href="#/">Player Analytics <span id="header_server_ip"></span></a>
 			</div><!-- /.navbar-header -->
-			<div id="sidebar" class="navbar-default sidebar">
+			<div id="sidebar" class="navbar-default sidebar" role="navigation">
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu" style="cursor:pointer">
 						<li class="menu">
@@ -97,7 +97,8 @@ $servers = $database->resultset();
 								</li>
 							<?php foreach ($servers as $server): ?>
 								<li class="menu_server">
-									<a> <?php echo ServerName($server['server_ip'], $server_names); ?></a>
+									<a> <?php echo ServerName($server['server_ip'], $server_names); ?><br><small style="color:lightsteelblue"><?php echo KeyToValue($server['server_ip'], $server_sub_names, $return_empty = true); ?></small></a>
+									
 									<input type="hidden" value="<?php echo $server['server_ip']; ?>"/>
 								</li>								
 							<?php endforeach ?>
@@ -107,7 +108,7 @@ $servers = $database->resultset();
 				</div><!-- /.sidebar-collapse -->
 			</div><!-- /.navbar-static-side -->
 		</nav>
-		<div id="page-wrapper" style="margin-top:25px">
+		<div id="page-wrapper">
 			<div id="overlay"><i class="fa fa-spinner fa-spin fa-5x"></i></div>
 			<div id="content">
 

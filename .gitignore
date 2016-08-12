@@ -43,3 +43,4 @@ Temporary Items
 .apdisk
 
 inc/config_db.php
+inc/sql_log.txt

@@ -20,6 +20,11 @@ $server_names = [
     
 ];
 
+# A name that will appears in nav below the ip 
+$server_sub_names = [
+    "your_ip:port"  => "Server name",
+];
+
 # Replace flags like z, bce with a name like VIP, Admin etc.
 $staff_group_names = [
     #"z"   => "Super Admin (z)",
@@ -47,6 +52,16 @@ function ServerName($key, $server_names)
 {
   if (array_key_exists($key, $server_names)) {
     return $server_names[$key];
+  }
+  return $key;
+}
+
+function KeyToValue($key, $value, $return_empty = false) {
+  if (array_key_exists($key, $value)) {
+    return $value[$key];
+  }
+  if($return_empty) {
+    return "";
   }
   return $key;
 }
