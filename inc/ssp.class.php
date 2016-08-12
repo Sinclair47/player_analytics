@@ -376,6 +376,8 @@ class SSP {
         $stmt = $db->prepare( $sql );
         #echo $sql;
 	    #print_r($sql); die;
+        #$myfile = fopen("sql_log.txt", "a");     fwrite($myfile, "\n### ".date('Y-m-d H:i:s')." ### \n".$sql."\n");    fclose($myfile);
+        #$file = file_get_contents("sql_log.txt");   file_put_contents("sql_log.txt", "\n### ".date('Y-m-d H:i:s')." ### \n".$sql."\n" . $file);
 
         // Bind parameters
         if ( is_array( $bindings ) ) {

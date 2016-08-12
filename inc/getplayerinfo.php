@@ -12,11 +12,21 @@ require_once 'config.php';
 // Include database class
 require_once 'database.class.php';
 
+$server_ip = Util::getCookie("server");
+
+$ip = '';
+if(isset($server_ip)) {
+	$ip = ' AND server_ip = :ip';
+}
+
 // Instantiate database.
 $database = new Database();
 
-$database->query('SELECT * FROM (SELECT * FROM `'.DB_TABLE_PA.'` WHERE `auth` = :id ORDER BY `connect_time` DESC) AS a');
+$database->query('SELECT * FROM (SELECT * FROM `'.DB_TABLE_PA.'` WHERE `auth` = :id '.$ip.' ORDER BY `connect_time` DESC) AS a');
 $database->bind(':id', $_GET['id']);
+if(isset($server_ip)) {
+	$database->bind(':ip', $server_ip);
+}
 $info = $database->resultset();
 
 $profile = GetPlayerInformation(SteamTo64($_GET['id']));

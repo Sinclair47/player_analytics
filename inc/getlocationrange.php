@@ -17,22 +17,24 @@ if (!isset($_GET['id'])) {
 }
 
 $date = explode(",", $_GET['id']);
+$server_ip = Util::getCookie("server");
 
 // Instantiate database.
 $database = new Database();
 
-if (isset($_GET['server'])) {
-	$server = $_GET['server'];
-	$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip GROUP BY `country_code`');
-	$database->bind(':ip', $server);
-	$map = $database->resultset();
+$where_server_ip = "" ;
+if (isset($server_ip)) {
+	$where_server_ip = " `server_ip` = :ip AND " ;
 }
-else {
-	$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country_code`');
-	$database->bind(':start', $date[0]);
-	$database->bind(':end', $date[1]);
-	$map = $database->resultset();
+
+$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE '.$where_server_ip.' `connect_date` BETWEEN  :start AND :end GROUP BY `country_code`');
+$database->bind(':start', $date[0]);
+$database->bind(':end', $date[1]);
+if (isset($server_ip)) {
+	$database->bind(':ip', $server_ip);
 }
+$map = $database->resultset();
+
 
 foreach ($map as $key => $value) {
 	if ($value['country_code'] != NULL) {

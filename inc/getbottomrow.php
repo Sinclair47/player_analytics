@@ -17,21 +17,18 @@ if (!isset($_GET['id'])) {
 }
 
 $date = explode(",", $_GET['id']);
-$c_total = 0;
-$m_total = 0;
-$p_total = 0;
 
 // Instantiate database.
 $database = new Database();
 $server_ip = Util::getCookie("server");
 if (isset($server_ip)) {
-	$database->query('SELECT `country` AS label, COUNT(`country`) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `country`');
+	$database->query('SELECT `country` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `country`'); #count(*) instead of count(country) bcs we need to count also NULL values 
 	$database->bind(':start', $date[0]);
 	$database->bind(':end', $date[1]);
 	$database->bind(':ip', $server_ip);
 	$country = $database->resultset();
 
-	$database->query('SELECT `connect_method` AS label, COUNT(`connect_method`) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
+	$database->query('SELECT `connect_method` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
 	$database->bind(':start', $date[0]);
 	$database->bind(':end', $date[1]);
 	$database->bind(':ip', $server_ip);
@@ -45,12 +42,12 @@ if (isset($server_ip)) {
 }
 
 else {
-	$database->query('SELECT `country` AS label, COUNT(`country`) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country`');
+	$database->query('SELECT `country` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country`');
 	$database->bind(':start', $date[0]);
 	$database->bind(':end', $date[1]);
 	$country = $database->resultset();
 
-	$database->query('SELECT `connect_method` AS label, COUNT(`connect_method`) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
+	$database->query('SELECT `connect_method` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
 	$database->bind(':start', $date[0]);
 	$database->bind(':end', $date[1]);
 	$method = $database->resultset();
@@ -61,115 +58,10 @@ else {
 	$premium = $database->resultset();
 }
 
-foreach ($country as $key => $value) {
-	$c_total += $value['value'];
-}
 
-foreach ($method as $key => $value) {
-	$m_total += $value['value'];
-}
-
-foreach ($premium as $key => $value) {
-	$p_total += $value['value'];
-}
-
-foreach ($country as $key => $value) {
-	$country[$key]['value'] = number_format($value['value']/$c_total*100,2);
-}
-
-#show the top ten countries only
-$tmp_countries = $country;
-$countries_filtered = array();
-$c_percent = 0;
-$skip_other_country_calc = false;
-
-if(count($country) <= $Show_Max_Countries) {
-	$Show_Max_Countries = count($country);
-	$skip_other_country_calc = true;
-}
-
-
-if(count($country) > 1) {
-	for($i = 1; $i <= $Show_Max_Countries; $i++) {
-		$top = array_reduce($tmp_countries, function ($a, $b) {
-			return @$a['value'] > $b['value'] ? $a : $b ;
-		});
-		foreach($tmp_countries as $key => &$c) {
-			if($c['label'] == $top['label']) {
-				unset($tmp_countries[$key]);
-			}
-		}
-
-		$countries_filtered[] = $top;
-		$c_percent += $top['value'];
-	}
-
-	$countries_filtered = array_reverse($countries_filtered); #reverse array order, so the donut is build up from big to small
-	if(!$skip_other_country_calc) {
-		$countries_filtered[] = array(
-									'label' => 'Other Countries',
-									'value' => number_format(100 - $c_percent,2),
-		);
-	}
-	$country = $countries_filtered;
-}
-
-
-foreach ($method as $key => $value) {
-	if (preg_match("/quickplay/", $value['label']) || preg_match("/quickpick/", $value['label'])) {
-		
-		if (preg_match("/quickplay/", $value['label'])) {
-			if (!isset($id)) {
-				$id = $key;
-				
-				$methods[$id]['label'] = 'quickplay';
-				$methods[$id]['value'] = $value['value'];
-			}
-			else {
-				$methods[$id]['label'] = 'quickplay';
-				$methods[$id]['value'] += $value['value'];
-			}
-		}
-		if (preg_match("/quickpick/", $value['label'])) {
-			if (!isset($id2)) {
-				$id2 = $key;
-				$methods[$id2]['label'] = 'quickpick';
-				$methods[$id2]['value'] = $value['value'];
-			}
-			else {
-				$methods[$id2]['label'] = 'quickpick';
-				$methods[$id2]['value'] += $value['value'];
-			}
-		}
-	}
-	else {
-		$methods[$key]['label'] = $value['label'];
-		$methods[$key]['value'] = $value['value'];	
-	}
-}
-if(isset($methods)) {
-	foreach ($methods as $key => $value) {
-		$methods[$key]['label'] = ConnMethod($value['label']);
-		$methods[$key]['value'] = number_format($value['value']/$m_total*100,2);
-	}
-}
-
-foreach ($premium as $key => $value) {
-	if ($value['label'] == '1') {
-		$value['label'] = 'Premium';
-	} 
-	elseif ($value['label'] == '0') {
-		$value['label'] = 'F2P';
-	}
-	else {
-		$value['label'] = 'Unknown';
-	}
-	$premium[$key]['label'] = $value['label'];
-	if(!$p_total == 0)
-		$premium[$key]['value'] = number_format($value['value']/$p_total*100,2);
-	else
-		$premium[$key]['value'] = 0;
-}
+$country = processCountries($country, $Show_Max_Countries);
+$methods = processConnectMethods($method);
+$premium = processPremium($premium);
 
 $country = json_encode($country);
 $methods = json_encode(array_values($methods));
@@ -250,3 +142,159 @@ $premium = json_encode($premium);
 	// 	});
 	// });
 </script>
+
+<?php
+
+function processCountries($country, $Show_Max_Countries) {
+
+	if(empty($country)) {
+		return NoChartData();
+	}
+
+	$c_total = 0;
+
+	foreach ($country as $key => $value) {
+		$c_total += $value['value'];
+	}
+
+	foreach ($country as $key => $value) {
+		$country[$key]['value'] = number_format($value['value']/$c_total*100,2);
+	}
+
+	#show the top ten countries only
+	$tmp_countries = $country;
+	$countries_filtered = array();
+	$c_percent = 0;
+	$skip_other_country_calc = false;
+
+	if(count($country) <= $Show_Max_Countries) {
+		$Show_Max_Countries = count($country);
+		$skip_other_country_calc = true;
+	}
+
+
+	if(count($country) > 1) {
+		for($i = 1; $i <= $Show_Max_Countries; $i++) {
+			$top = array_reduce($tmp_countries, function ($a, $b) {
+				return @$a['value'] > $b['value'] ? $a : $b ;
+			});
+			foreach($tmp_countries as $key => &$c) {
+				if($c['label'] == $top['label']) {
+					unset($tmp_countries[$key]);
+				}
+			}
+
+			$countries_filtered[] = $top;
+			$c_percent += $top['value'];
+		}
+
+		$countries_filtered = array_reverse($countries_filtered); #reverse array order, so the donut is build up from big to small
+		if(!$skip_other_country_calc) {
+			$countries_filtered[] = array(
+										'label' => 'Other Countries',
+										'value' => number_format(100 - $c_percent,2),
+			);
+		}
+		$country = $countries_filtered;
+	}
+
+	return $country;
+}
+
+
+function processConnectMethods($method) {
+
+	if(empty($method)) {
+		return NoChartData();
+	}
+
+	$m_total = 0;
+
+	foreach ($method as $key => $value) {
+		$m_total += $value['value'];
+	}
+
+
+	foreach ($method as $key => $value) {
+		if (preg_match("/quickplay/", $value['label']) || preg_match("/quickpick/", $value['label'])) {
+			
+			if (preg_match("/quickplay/", $value['label'])) {
+				if (!isset($id)) {
+					$id = $key;
+					
+					$methods[$id]['label'] = 'quickplay';
+					$methods[$id]['value'] = $value['value'];
+				}
+				else {
+					$methods[$id]['label'] = 'quickplay';
+					$methods[$id]['value'] += $value['value'];
+				}
+			}
+			if (preg_match("/quickpick/", $value['label'])) {
+				if (!isset($id2)) {
+					$id2 = $key;
+					$methods[$id2]['label'] = 'quickpick';
+					$methods[$id2]['value'] = $value['value'];
+				}
+				else {
+					$methods[$id2]['label'] = 'quickpick';
+					$methods[$id2]['value'] += $value['value'];
+				}
+			}
+		}
+		else {
+			$methods[$key]['label'] = $value['label'];
+			$methods[$key]['value'] = $value['value'];	
+		}
+	}
+	if(isset($methods)) {
+		foreach ($methods as $key => $value) {
+			$methods[$key]['label'] = ConnMethod($value['label']);
+			$methods[$key]['value'] = number_format($value['value']/$m_total*100,2);
+		}
+	}
+
+	return $methods;
+
+}
+
+
+function processPremium($premium) {
+	if(empty($premium)) {
+		return NoChartData();
+	}
+
+	$p_total = 0;
+
+	foreach ($premium as $key => $value) {
+		$p_total += $value['value'];
+	}
+
+	foreach ($premium as $key => $value) {
+		if ($value['label'] == '1') {
+			$value['label'] = 'Premium';
+		} 
+		elseif ($value['label'] == '0') {
+			$value['label'] = 'F2P';
+		}
+		else {
+			$value['label'] = 'Unknown';
+		}
+		$premium[$key]['label'] = $value['label'];
+		if(!$p_total == 0)
+			$premium[$key]['value'] = number_format($value['value']/$p_total*100,2);
+		else
+			$premium[$key]['value'] = 0;
+	}
+
+	return $premium;
+}
+
+function NoChartData() {
+	return array(
+			0 => array(
+				'label' => 'No Data',
+				'value' => '0',
+			)
+		);
+}

@@ -20,6 +20,7 @@ $db_conn = array(
 );
 
 $table = DB_TABLE_PA;
+$server_ip = Util::getCookie("server");
 
 if (isset($_GET['type']) && $_GET['type'] == 'getconnections') {
 
@@ -84,10 +85,20 @@ if (isset($_GET['type']) && $_GET['type'] == 'getconnections') {
         )
     );
 
+    $where = '';
+
+    if(isset($server_ip)) {
+        if(!empty($where)) {
+            $where .= " AND server_ip = '" . $server_ip."'"; 
+        } else {
+            $where .= " server_ip = '" . $server_ip."'";
+        }
+    }
+
     require('ssp.class.php');
 
     echo json_encode(
-        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '')
+        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy = '', $where)
     );
 }
 
@@ -159,10 +170,12 @@ if (isset($_GET['type']) && ($_GET['type'] == 'getplayers' || $_GET['type'] == '
         ),
     );
 
+
+
     $where = '';
     $groupBy = "GROUP BY auth";
 
-    if($_GET['type'] == 'getstaff') {
+    if($_GET['type'] == 'getstaff') { # AND flags != "" AND (flags = 'z' OR flags = 'xy')
         $where = 'flags != "" ';
         if(!empty($staff_whitelist)) {
             $where .= " AND (";
@@ -173,7 +186,16 @@ if (isset($_GET['type']) && ($_GET['type'] == 'getplayers' || $_GET['type'] == '
             $where .= ")";
         }
         $groupBy = "GROUP BY auth, flags";
-    }   
+    }
+
+    if(isset($server_ip)) {
+        if(!empty($where)) {
+            $where .= " AND server_ip = '" . $server_ip."'"; 
+        } else {
+            $where .= " server_ip = '" . $server_ip."'";
+        }
+    }
+    
 
     require('ssp.class.php');
 
@@ -229,10 +251,18 @@ if (isset($_GET['type']) && $_GET['type'] == 'getcountryinfo') {
 
     $extraCondition = "`country_code` = '".$_GET['id']."'";
 
+    if(isset($server_ip)) {
+        if(!empty($extraCondition)) {
+            $extraCondition .= " AND server_ip = '" . $server_ip."'"; 
+        } else {
+            $extraCondition .= " server_ip = '" . $server_ip."'";
+        }
+    }
+
     require('ssp.class.php');
 
     echo json_encode(
-        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition)
+        SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition, $groupBy = '')
     );
 }
 
