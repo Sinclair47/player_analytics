@@ -23,8 +23,7 @@ crossroads.addRoute('/stats/staff', function() {
     pageLoader( "inc/getStaff.php" );
 });
 crossroads.addRoute('/stats/maps', function() {
-    //pageLoader( "inc/.php" );
-    alert("nothing to see here");
+    pageLoader( "inc/getMap.php" );
 });
 
 // crossroads.addRoute('/user/{userId}', function(userId) {
