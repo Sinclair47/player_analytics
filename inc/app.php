@@ -5,6 +5,10 @@ define("DB_TABLE_PA", "player_analytics");
 
 $dir = dirname(realpath(__FILE__));
 require_once $dir . '/config.php';
+if(!is_file($dir . '/config_db.php')) {
+	echo "<h2>You need to rename your config_db_RENAME_ME.php file fo config_db.php in /inc</h2>";
+	die;
+}
 require_once $dir . '/config_db.php';
 
 require_once $dir . '/util.php';
@@ -122,7 +126,7 @@ function getServerIpsSql($include_sql_where = false, $pre = '', $post = '') {
 	if(isset($server_ips)) {
 		$where .= " server_ip IN (";
 		foreach($server_ips as $ip) {
-			$where .= "'".mysql_real_escape_string($ip)."',";
+			$where .= "'".ms_escape_string($ip)."',";
 		}
 		$where = rtrim($where, ",");
 		$where .= ") ";
@@ -143,6 +147,9 @@ function getServerIpsSql($include_sql_where = false, $pre = '', $post = '') {
 */
 function getDateRangeSql($include_sql_where = false) {
 	$dates = Util::getCookieJson("dates");
+	if(!array($dates)) {
+		return "";
+	}
 	$where = "";
 	
 	if($include_sql_where) {
@@ -151,10 +158,28 @@ function getDateRangeSql($include_sql_where = false) {
 
 	if(isset($dates)) {
 		$where .= " `connect_date` BETWEEN";
-		$where .= " '". mysql_real_escape_string($dates['start']) . "' AND '" . mysql_real_escape_string($dates['end']). "' ";            
+		$where .= " '". ms_escape_string($dates['start']) . "' AND '" . ms_escape_string($dates['end']). "' ";            
 		return $where;          
 	}
 	return "";
+}
+
+function ms_escape_string($data) {
+	if ( !isset($data) or empty($data) ) return '';
+	if ( is_numeric($data) ) return $data;
+
+	$non_displayables = array(
+		'/%0[0-8bcef]/',            // url encoded 00-08, 11, 12, 14, 15
+		'/%1[0-9a-f]/',             // url encoded 16-31
+		'/[\x00-\x08]/',            // 00-08
+		'/\x0b/',                   // 11
+		'/\x0c/',                   // 12
+		'/[\x0e-\x1f]/'             // 14-31
+	);
+	foreach ( $non_displayables as $regex )
+		$data = preg_replace( $regex, '', $data );
+	$data = str_replace("'", "''", $data );
+	return $data;
 }
 
 // function ReadCacher($cache_key = null, $data = null, $cache_time = 600, $group = '') {
@@ -233,6 +258,7 @@ function PlaytimeCon($seconds)
 }
 
 function PlaytimeConDashboard($seconds) {
+	return "deactivated";
 	#echo $seconds."<br>";
 	$date_format = '%aD %H:%ih';
 	if($seconds > 5184000) {# 2 months

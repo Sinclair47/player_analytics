@@ -44,3 +44,5 @@ Temporary Items
 
 inc/sql_log.txt
 cache/
+inc/config_db.php
+inc/config_db.php

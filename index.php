@@ -10,6 +10,8 @@ if($servers === false) {
 	$servers = $database->resultset();
 	FileSystemCache::store($key, $servers, 1200); #600 sec = 10 min
 }
+
+$force_recache = "?t1";  # change to some other random string after modding js files
 ?>
 
 <!DOCTYPE html>
@@ -19,13 +21,13 @@ if($servers === false) {
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<title><?php echo $Title ?></title>
-	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-	<link href="css/dataTables.bootstrap.css" rel="stylesheet" type="text/css">
-	<link href="css/sb-admin-2.css" rel="stylesheet" type="text/css">
-	<link href="css/morris.css" rel="stylesheet" type="text/css">
-	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css">
-	<link href="css/daterangepicker.css" rel="stylesheet" type="text/css">
+	<link href="css/bootstrap.min.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="css/dataTables.bootstrap.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="css/sb-admin-2.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="css/morris.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="font-awesome/css/font-awesome.min.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="css/jquery-jvectormap-1.2.2.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="css/daterangepicker.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
 	<style>
 		#overlay {
@@ -161,20 +163,20 @@ if($servers === false) {
 
 	</div><!-- /Modal -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/moment.min.js"></script>
-	<script src="js/daterangepicker.js"></script>
-	<script src="js/signals.min.js"></script>
-	<script src="js/hasher.min.js"></script>
-	<script src="js/crossroads.min.js"></script>
-	<script src="js/plugins/morris/raphael.min.js"></script>
-	<script src="js/plugins/morris/morris.min.js"></script>
-	<script src="js/plugins/dataTables/jquery.dataTables.min.js"></script>
-	<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
-	<script src="js/plugins/jvectormaps/jquery-jvectormap-1.2.2.min.js"></script>
-	<script src="js/plugins/jvectormaps/jquery-jvectormap-world-merc-en.js"></script>
+	<script src="js/bootstrap.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/moment.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/daterangepicker.js<?php echo $force_recache ?>"></script>
+	<script src="js/signals.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/hasher.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/crossroads.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/plugins/morris/raphael.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/plugins/morris/morris.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/plugins/dataTables/jquery.dataTables.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/plugins/dataTables/dataTables.bootstrap.js<?php echo $force_recache ?>"></script>
+	<script src="js/plugins/jvectormaps/jquery-jvectormap-1.2.2.min.js<?php echo $force_recache ?>"></script>
+	<script src="js/plugins/jvectormaps/jquery-jvectormap-world-merc-en.js<?php echo $force_recache ?>"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
-	<script src="js/app.js"></script>
+	<script src="js/app.js<?php echo $force_recache ?>"></script>
 
 	<script type="text/javascript">
 

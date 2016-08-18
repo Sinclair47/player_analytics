@@ -1,13 +1,29 @@
 <?php
-
-# Rename me to config_db.php
-
-//Database Info
-define("DB_HOST",  'localhost');
-define("DB_USER",  'YOUR_USER');
-define("DB_PASS",  'YOUR_PASSWORD');
-define("DB_NAME",  'DATABASE');
-define("DB_PORT",  '3306');
-
-# Don't touch me :-)
-define("DB_TABLE_PA", "player_analytics");
+// Database Info
+// You can specify multiple DBs. Don't forget to uncomment the array ;-) 
+$databases = array (
+	0 => array(
+		'database_name' => 'your_db_name',
+		'host'          => 'localhost',
+		'username'      => 'user',
+		'password'      => 'pass',
+		'port'          => 3306,
+		'friendlyName'  => 'Default DB',
+	),
+	// 1 => array(
+	// 	'database_name' => 'your_db_name',
+	// 	'host'          => 'localhost',
+	// 	'username'      => 'user',
+	// 	'password'      => 'pass',
+	// 	'port'          => 3306,
+	// 	'friendlyName'  => 'My second DB',
+	// ),
+	// 2 => array(
+	// 	'database_name' => 'your_db_name',
+	// 	'host'          => 'localhost',
+	// 	'username'      => 'user',
+	// 	'password'      => 'pass',
+	// 	'port'          => 3306,
+	// 	'friendlyName'  => 'My third DB',
+	// ),
+);
