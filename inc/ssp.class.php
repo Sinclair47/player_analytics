@@ -235,14 +235,21 @@ class SSP {
 
         #my WHERE hack
         $add_where = '';
-        
         if(!empty($where2)) {
-           
-            $add_where = " WHERE ";
+            if(empty($where)) {
+                $add_where = " WHERE ";
+            } else {
+                if(substr(trim($where),0,6) == "HAVING") {
+                    $add_where = " WHERE ";
+                } else {
+                    $add_where = " AND ";
+                }
+            }
         }
         if(!empty($where2)) {
             $add_where .= " ".$where2." ";
         }
+        #pr($where); die;
 
         // Main query to actually get the data
         if($joinQuery){

@@ -6,50 +6,34 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
     die();
 }
 
-//Database Info
-require_once 'config.php';
+require_once 'app.php';
 
-// Include database class
-require_once 'database.class.php';
+// if (!isset($_GET['id'])) {
+// 	$_GET['id'] = date("Y-m-d", strtotime('-7 day')).",".date("Y-m-d");
+// }
 
-if (!isset($_GET['id'])) {
-	$_GET['id'] = date("Y-m-d", strtotime('-7 day')).",".date("Y-m-d");
-}
+$dates = Util::getCookieJson("dates");
+#pr($dates); die;
 
-$date = explode(",", $_GET['id']);
 
-// Instantiate database.
-$database = new Database();
-
-if (isset($_GET['server'])) {
-	$server_ip = $_GET['server'];
-	if ($date[0] == $date[1]) {
-		$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
-		$database->bind(':start', $date[0]);
-		$database->bind(':end', $date[1]);
-		$database->bind(':ip', $server_ip);
+if ($dates['start'] == $dates['end']) {
+	$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
+	$key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
+	$connections = FileSystemCache::retrieve($key);
+	if($connections === false) {
 		$connections = $database->resultset();
+		FileSystemCache::store($key, $connections, 1000);
 	}
-	else {
-		$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `connect_date`');
-		$database->bind(':start', $date[0]);
-		$database->bind(':end', $date[1]);
-		$database->bind(':ip', $server_ip);
-		$connections = $database->resultset();
-	}
+	
 }
 else {
-	if ($date[0] == $date[1]) {
-		$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
-		$database->bind(':start', $date[0]);
-		$database->bind(':end', $date[1]);
+	$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY `connect_date`');
+	$key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
+	$connections = FileSystemCache::retrieve($key);
+	if($connections === false) {
 		$connections = $database->resultset();
-	}
-	else {
-		$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `connect_date`');
-		$database->bind(':start', $date[0]);
-		$database->bind(':end', $date[1]);
-		$connections = $database->resultset();
+		FileSystemCache::store($key, $connections, 1000);
 	}
 }
+
 print_r(json_encode($connections));

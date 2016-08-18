@@ -6,28 +6,16 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
     die();
 }
 
-//Database Info
-require_once 'config.php';
+require_once 'app.php';
 
-// Include database class
-require_once 'database.class.php';
-
-$server_ip = Util::getCookie("server");
-
-$ip = '';
-if(isset($server_ip)) {
-	$ip = ' AND server_ip = :ip';
+$database->query('SELECT `server_ip`, `name`, `auth`, `connect_time`, `connect_method`, `numplayers`, `map`, `duration`, `flags`, `country`, `os`  FROM `'.DB_TABLE_PA.'` WHERE auth = :auth AND '.getIpDatesSql().' ORDER BY `connect_time` DESC');
+$key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $_GET['id'], $db))), 'SQL');
+$info = FileSystemCache::retrieve($key);
+if($info === false) {
+	$database->bind(':auth', $_GET['id']);
+	$info = $database->resultset();
+	FileSystemCache::store($key, $info, 1000);
 }
-
-// Instantiate database.
-$database = new Database();
-
-$database->query('SELECT * FROM (SELECT * FROM `'.DB_TABLE_PA.'` WHERE `auth` = :id '.$ip.' ORDER BY `connect_time` DESC) AS a');
-$database->bind(':id', $_GET['id']);
-if(isset($server_ip)) {
-	$database->bind(':ip', $server_ip);
-}
-$info = $database->resultset();
 
 $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 
@@ -53,7 +41,7 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 									</a>
 									<h4>SteamID</h4>
 									<span class="badge-profile"><?php echo @$info[0]['auth']; ?></span>
-									<h4>Location</h4>
+									<h4>Last Location</h4>
 									<span class="badge-profile"><?php echo @$info[0]['country']; ?></span>
 									<h4>OS</h4>
 									<span class="badge-profile"><?php echo @$info[0]['os']; ?></span>
@@ -78,20 +66,18 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 												<th style="text-align:right;">Map </th>
 												<th style="text-align:right;">Method </th>
 												<th style="text-align:right;">Flags </th>
-												<th style="text-align:right;">IP </th>
 											</tr>
 										</thead>
 										<tbody>
 						<?php foreach ($info as $info): ?>
 											<tr>
 												<td style="text-align:left;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?php echo ServerName($info['server_ip'], $server_names); ?></td>
-												<td style="text-align:center;"><?php echo date('y-m-d', $info['connect_time']); ?></td>
+												<td style="text-align:center;"><?php echo date('Y-m-d', $info['connect_time']); ?></td>
 												<td style="text-align:center;"><?php echo PlaytimeCon($info['duration']); ?></td>
 												<td style="text-align:center;"><?php echo $info['numplayers']; ?></td>
 												<td style="text-align:right;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?php echo $info['map']; ?></td>
 												<td style="text-align:right;"><?php echo ConnMethod($info['connect_method']); ?></td>
 												<td style="text-align:right;"><?php echo FlagToName($info['flags'], $staff_group_names); ?></td>
-												<td style="text-align:right;"><?php echo $info['ip']; ?></td>
 											</tr>
 						<?php endforeach ?>
 										</tbody>
@@ -100,6 +86,11 @@ $profile = GetPlayerInformation(SteamTo64($_GET['id']));
 							</div><!-- /.panel-body -->
 						</div><!-- /.panel -->
 					</div><!-- /.col-lg-9 -->
+					<div class="row">
+						<div class="col-lg-3">
+
+						</div>
+					</div>
 				</div><!-- /.row -->
 <script type="text/javascript">
 $(document).ready(function(){

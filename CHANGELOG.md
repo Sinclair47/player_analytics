@@ -1,7 +1,27 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## 2015-08-11
+## 2016-08-18
+### Added
+- Staff whitelist
+- Staff & Player info flag names
+- crossroads.js for routing support. All pages are accessible via url now
+- simple error/404 page
+- It is possible to select multiple servers now
+- You can add multiple DBs now and switch easy between them
+- A simple cache
+
+## Changed
+- The DB configuration is now in config_db.php.
+- Server selection now works globally on all pages
+- Date selection now works globally on all pages
+
+
+## Fixed
+- Dashboard Charts are shown broken with empty values
+- Some layout issues
+
+## 2016-08-11
 ### Added
 - Staff page: Show only players with flags
 - Mark the current nav element as active
@@ -16,7 +36,8 @@ All notable changes to this project will be documented in this file.
 - Issue #2
 - Sending muliple ajax requests in single server views
 
-## 2015-08-08
+
+## 2016-08-08
 ### Added
 - server list (repo merge)
 

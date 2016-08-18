@@ -15,5 +15,26 @@ class Util {
             return $_COOKIE[$value];
         }
         return null; 
-    } 
-} 
+    }
+
+
+    public static function getCookieJson($value) {
+        if (isset($_COOKIE[$value]) && !empty($_COOKIE[$value])) {
+            return json_decode($_COOKIE[$value], true);
+        }
+        return null; 
+    }
+
+
+}
+
+/**
+* Nice print
+*/
+function pr($input) {
+    echo "<pre>";
+    print_r($input);
+    echo "</pre>";
+}
+
+

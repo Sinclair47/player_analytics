@@ -6,17 +6,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
     die();
 }
 
-//Database Info
-require_once 'config.php';
-
-// Include database class
-require_once 'database.class.php';
-
-// Instantiate database.
-$database = new Database();
-
-$server = $_GET['server'];
-$id = $_GET['id'];
+require_once 'app.php';
 ?>
 
 <?php if ($id == "c"): ?>

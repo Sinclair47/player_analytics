@@ -1,13 +1,11 @@
+crossroads.ignoreState= true;
 
 // Define the routes
 crossroads.addRoute('/', function() {
-    console.log("home");
-    //alert("Home");
     pageLoader( "inc/getdashboard.php" );
 });
 
 crossroads.addRoute('/stats/locations', function() {
-    //$( "#content" ).load( "inc/getlocation.php" );
     pageLoader("inc/getlocation.php");
 });
 crossroads.addRoute('/stats/connections', function() {
@@ -37,10 +35,14 @@ crossroads.routed.add(console.log, console); //log all routes
 
 
 function pageLoader(url) {
-    $( "#content" ).load( url );
-    var cookie = getCookie("server");
+    //$('#overlay').fadeIn("fast");
+	$('#content').empty();
+    $('#content').load( url );
+    //$('#overlay').delay(200).fadeOut( "slow" );
+
+    //var cookie = getCookie("server");
     //console.log("js cookie: " + cookie);
-    $( "#header_server_ip" ).html(cookie);
+    //$( "#header_server_ip" ).html(cookie);
 }
 
 
@@ -56,20 +58,20 @@ function pageLoader(url) {
 //     document.cookie = cname+"="+"cvalue"+"; "+expires;
 // }
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
+// function getCookie(cname) {
+//     var name = cname + "=";
+//     var ca = document.cookie.split(';');
+//     for(var i=0; i<ca.length; i++) {
+//         var c = ca[i];
+//         while (c.charAt(0)==' ') {
+//             c = c.substring(1);
+//         }
+//         if (c.indexOf(name) == 0) {
+//             return c.substring(name.length, c.length);
+//         }
+//     }
+//     return "";
+// }
 
 // function checkCookie() {
 //     var user=getCookie("username");

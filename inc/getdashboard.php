@@ -7,25 +7,16 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 }
 
 //Database Info
-require_once 'config.php';
+require_once 'app.php';
 
-// Include database class
-require_once 'database.class.php';
+//$server_ip = true;
 
-// Instantiate database.
-$database = new Database();
-
-$server_ip = Util::getCookie("server");
-
-if (isset($server_ip)) {
-	$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip');
-	$database->bind(':ip', $server_ip);
+$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true));
+$key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
+$info = FileSystemCache::retrieve($key);
+if($info === false) {
 	$info = $database->single();
-}
-
-else {
-	$database->query('SELECT COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'`');
-	$info = $database->single();
+	FileSystemCache::store($key, $info, 1000);
 }
 
 ?>
@@ -173,15 +164,10 @@ else {
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<i class="fa fa-bar-chart-o fa-fw"></i> Connections for
-								<div class="pull-right">
-									<div id="reportrange" class="pull-right">
-										<i class="fa fa-calendar fa-lg"></i>
-										<span><?php echo date("F j, Y", strtotime('-7 day')); ?> - <?php echo date("F j, Y"); ?></span> <b class="caret"></b>
-									</div>
-								</div>
+								
 							</div><!-- /.panel-heading -->
 							<div class="panel-body">
-								<div id="chart" style="cursor:pointer;"></div>
+								<div id="chart" style="cursor:pointer;"></div> <!-- connections chart -->
 							</div><!-- /.panel-body -->
 						</div><!-- /.panel -->
 					</div><!-- /.col-lg-12 -->
@@ -195,7 +181,8 @@ else {
 	<script type="text/javascript">
 	var query = "<?php echo $server_ip; ?>";
 		$(document).ready(function() {
-			$("#bottomrow").load("inc/getbottomrow.php?server="+query);
+			$("#bottomrow").load("inc/getbottomrow.php);
+
 
 			function data(dates){
 					$.ajax({
@@ -242,6 +229,7 @@ else {
 					}
 				});
 			});
+			
 			var chart =  Morris.Area ({
 				element: 'chart',
 				data: data(moment().subtract('days', 6).format('YYYY-M-D')+","+moment().format('YYYY-M-D')),
@@ -319,36 +307,7 @@ else {
 					}
 				})
 			}
-		$('#reportrange').daterangepicker(
-			{
-				ranges: {
-					'Today': [moment(), moment()],
-					'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-					'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-					'This Month': [moment().startOf('month'), moment().endOf('month')],
-					'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-				},
-				startDate: moment().subtract(6, 'days'),
-				endDate: moment()
-			},
-			function(start, end) {
-				$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-			}
-		);
-		$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-			var dates = picker.startDate.format('YYYY-M-D')+","+picker.endDate.format('YYYY-M-D');
-			data(dates);
-			$.ajax({
-				type: "GET",
-				url: "inc/getbottomrow.php",
-				data: 'id=' + picker.startDate.format('YYYY-M-D')+","+picker.endDate.format('YYYY-M-D'),
-				success: function(msg){
-					$('#bottomrow').empty();
-					$('#bottomrow').html(msg);
-				}
-			});
-		});
+		
 		var chart =  Morris.Area ({
 			element: 'chart',
 			data: data(moment().subtract('days', 6).format('YYYY-M-D')+","+moment().format('YYYY-M-D')),

@@ -2,7 +2,10 @@
 This is a webpanel for the sourcemod plugin **[ANY] Player Analytics** by Dr. McKay
 https://forums.alliedmods.net/showthread.php?t=230832
 
-forked from Sinclair47/player_analytics https://github.com/Sinclair47/player_analytics
+forked from Sinclair47/player_analytics https://github.com/Sinclair47/player_analytics 
+
+If you have suggestions or you found a bug -> **contact me: thechaoscoder+player-analytics[at]gmail.com**  
+(replace [at] with @, bot protection) or open an issue here
 
 ## How to install?
 Download as zip (or clone) and copy all files to your webserver.  

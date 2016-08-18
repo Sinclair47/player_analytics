@@ -56,15 +56,26 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   white-space: nowrap;
 }
 div.dataTables_wrapper div.dataTables_processing {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 200px;
-  margin-left: -100px;
-  margin-top: -26px;
-  text-align: center;
-  padding: 1em 0;
+	position: absolute;
+	bottom: calc(50% - 70px);
+    left: 10%;
+    width: 80%;
+    /* margin-left: -200px; */
+    /* margin-top: -26px; */
+    text-align: center;
+    padding: 1em 0;
+    height: 70px;
+    padding-top: 22px;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    z-index: 99;
+    opacity: 0.92;
 }
+
+
 
 table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting,
 table.dataTable thead > tr > td.sorting_asc,

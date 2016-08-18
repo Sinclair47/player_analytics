@@ -6,57 +6,21 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
     die();
 }
 
-//Database Info
-require_once 'config.php';
+require_once 'app.php';
 
-// Include database class
-require_once 'database.class.php';
 
-if (!isset($_GET['id'])) {
-	$_GET['id'] = date("Y-m-d", strtotime('-7 day')).",".date("Y-m-d");
-}
+// if (!isset($_GET['id'])) {
+// 	$_GET['id'] = date("Y-m-d", strtotime('-7 day')).",".date("Y-m-d");
+// }
 
-$date = explode(",", $_GET['id']);
+$database->query('SELECT `country` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY `country`'); #count(*) instead of count(country) bcs we need to count also NULL values 
+$country = $database->resultset();
 
-// Instantiate database.
-$database = new Database();
-$server_ip = Util::getCookie("server");
-if (isset($server_ip)) {
-	$database->query('SELECT `country` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `country`'); #count(*) instead of count(country) bcs we need to count also NULL values 
-	$database->bind(':start', $date[0]);
-	$database->bind(':end', $date[1]);
-	$database->bind(':ip', $server_ip);
-	$country = $database->resultset();
+$database->query('SELECT `connect_method` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY `connect_method`');
+$method = $database->resultset();
 
-	$database->query('SELECT `connect_method` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
-	$database->bind(':start', $date[0]);
-	$database->bind(':end', $date[1]);
-	$database->bind(':ip', $server_ip);
-	$method = $database->resultset();
-
-	$database->query('SELECT `premium` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `server_ip` = :ip AND `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
-	$database->bind(':start', $date[0]);
-	$database->bind(':end', $date[1]);
-	$database->bind(':ip', $server_ip);
-	$premium = $database->resultset();
-}
-
-else {
-	$database->query('SELECT `country` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country`');
-	$database->bind(':start', $date[0]);
-	$database->bind(':end', $date[1]);
-	$country = $database->resultset();
-
-	$database->query('SELECT `connect_method` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `connect_method`');
-	$database->bind(':start', $date[0]);
-	$database->bind(':end', $date[1]);
-	$method = $database->resultset();
-
-	$database->query('SELECT `premium` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `premium`');
-	$database->bind(':start', $date[0]);
-	$database->bind(':end', $date[1]);
-	$premium = $database->resultset();
-}
+$database->query('SELECT `premium` AS label, COUNT(*) AS value FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY `premium`');
+$premium = $database->resultset();
 
 
 $country = processCountries($country, $Show_Max_Countries);
@@ -121,26 +85,6 @@ $premium = json_encode($premium);
 	  data: <?php echo $premium; ?>,
 	  formatter: function (y) { return y + "%" ;}
 	});
-</script>
-<script type="text/javascript">
-// TODO remove
-	// $(document).ready(function() {
-	// 	$('.btn-block').on('click', function() {
-	// 		$.ajax({
-	// 			type: "GET",
-	// 			url: "inc/"+ $(this).find("input").val()+".php",
-	// 			beforeSend: function(){
-	// 				$('#overlay').fadeIn("fast");
-	// 				$('#content').empty();
-	// 				$('.daterangepicker').detach();
-	// 			},
-	// 			success: function(msg){
-	// 				$('#content').delay(400).fadeIn("slow").html(msg);
-	// 				$('#overlay').delay(400).fadeOut( "slow" );
-	// 			}
-	// 		});
-	// 	});
-	// });
 </script>
 
 <?php
