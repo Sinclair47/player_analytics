@@ -56,8 +56,8 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 												<th>Duration</th>
 												<th>Last On</th>
 												<th>Country</th>
-												<th><i class="fa fa-usd"></i></th>
-												<th><i class="fa fa-html5"></i></th>
+												<th title="Premium status. 0 = F2P, 1 = Premium aka you bought the game"><i class="fa fa-usd"></i></th>
+												<th title="Html MOTD disabled status"><i class="fa fa-html5"></i></th>
                                                 <th>Flags</th>
 												<th>OS</th>
 											</tr>
