@@ -261,47 +261,57 @@ if($servers === false) {
 		}
 	</script>
 	<script type="text/javascript">
+		$(document).ready(function() {
+			var drp_startDate = moment().subtract(6, 'days');
+			var drp_startEnd = moment();
 
-		var drp_startDate = moment().subtract(6, 'days');
-		var drp_startEnd = moment();
+			// load date cookie
+			var c_dates = getCookie("dates");
+			if(c_dates) {
+				c_dates = JSON.parse(c_dates);
+				drp_startDate = moment(new Date(c_dates['start']));
+				drp_startEnd  = moment(new Date(c_dates['end']));
 
-		// load date cookie
-		var c_dates = getCookie("dates");
-		if(c_dates) {
-			c_dates = JSON.parse(c_dates);
-			drp_startDate = moment(new Date(c_dates['start']));
-			drp_startEnd   = moment(new Date(c_dates['end']));
-			$('#reportrange span').html(drp_startDate.format('MMMM D, YYYY') + ' - ' + drp_startEnd.format('MMMM D, YYYY'));
-		}
+				$('#reportrange span').html(drp_startDate.format('MMMM D, YYYY') + ' - ' + drp_startEnd.format('MMMM D, YYYY'));
+			} else {
+				var s = drp_startDate;
+				var e = drp_startEnd;
+				var dates = {
+					"start": s.format('YYYY-M-D'),
+					"end": e.format('YYYY-M-D')
+				}
+				setCookie("dates", JSON.stringify(dates), 60);
+			}
 
-		$('#reportrange').daterangepicker(
-			{
-				ranges: {
-					'Today': [moment(), moment()],
-					'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-					'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-					'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-					'Last 90 Days': [moment().subtract(89, 'days'), moment()],
-					'This Month': [moment().startOf('month'), moment().endOf('month')],
-					'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			$('#reportrange').daterangepicker(
+				{
+					ranges: {
+						'Today': [moment(), moment()],
+						'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+						'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+						'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+						'Last 90 Days': [moment().subtract(89, 'days'), moment()],
+						'This Month': [moment().startOf('month'), moment().endOf('month')],
+						'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+					},
+					startDate: drp_startDate,
+					endDate: drp_startEnd
 				},
-				startDate: drp_startDate,
-				endDate: drp_startEnd
-			},
-			function(start, end) {
-				$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-			}
-		);
+				function(start, end) {
+					$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+				}
+			);
 
-		$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-			//var dates = picker.startDate.format('YYYY-M-D')+","+picker.endDate.format('YYYY-M-D');
-			var dates = {
-				"start": picker.startDate.format('YYYY-M-D'),
-				"end": picker.endDate.format('YYYY-M-D')
-			}
-			//console.log("dates:  " + JSON.stringify(dates));
-			setCookie("dates", JSON.stringify(dates), 60);
-			crossroads.parse(hasher.getHash()); // reload current page (only content)
+			$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+				//var dates = picker.startDate.format('YYYY-M-D')+","+picker.endDate.format('YYYY-M-D');
+				var dates = {
+					"start": picker.startDate.format('YYYY-M-D'),
+					"end": picker.endDate.format('YYYY-M-D')
+				}
+				//console.log("dates:  " + JSON.stringify(dates));
+				setCookie("dates", JSON.stringify(dates), 60);
+				crossroads.parse(hasher.getHash()); // reload current page (only content)
+			});
 		});
 	</script>
 </body>
