@@ -78,7 +78,7 @@ $force_recache = "?t1";  # change to some other random string after modding js f
 				<div style="padding-top: 8px" class="nav navbar-top-links navbar-right">
 					<select class="selectpicker form-control" multiple title="All Servers" data-size="auto" data-width="auto" data-header="Select a server" data-actions-box="true" data-selected-text-format="count > 3">
 						<?php foreach ($servers as $server): ?>
-							<option data-subtext="<?php echo KeyToValue($server['server_ip'], $server_sub_names, $return_empty = true); ?>"><?php echo ServerName($server['server_ip'], $server_names); ?></option>
+							<option value="<?php echo $server['server_ip']; ?>" data-subtext="<?php echo KeyToValue($server['server_ip'], $server_sub_names, $return_empty = true); ?>"><?php echo ServerName($server['server_ip'], $server_names); ?></option>
 						<?php endforeach ?>
 					</select>
 				</div>
