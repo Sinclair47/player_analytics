@@ -19,6 +19,9 @@ require_once $dir . '/database.class.php';
 if(!is_array($server_names) || !is_array($staff_group_names) || !is_array($staff_group_names) || !is_array($databases)) {
 	die("You have an error in your config");
 }
+if(!empty($staff_whitelist) && !empty($staff_blacklist)) {
+	die("<h2>You can not combine white and black list!</h2>");
+}
 
 
 $db = new DbManager($databases);

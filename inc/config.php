@@ -42,3 +42,9 @@ $staff_whitelist = [
     #"z",
     #"abc",
 ];
+# You can not combine white and black list!
+# Hide records with the following flags:
+$staff_blacklist = [
+    #"z",
+    #"abc",
+];

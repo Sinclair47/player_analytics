@@ -168,13 +168,24 @@ if (isset($_GET['type']) && ($_GET['type'] == 'getplayers' || $_GET['type'] == '
 
 
 	if($_GET['type'] == 'getstaff') { # AND flags != "" AND (flags = 'z' OR flags = 'xy')
-		$where = 'flags != "" ';
+		if(!empty($where)) {
+			$where .= " AND ";
+		}
+		$where .= 'flags != "" ';
 		if(!empty($staff_whitelist)) {
 			$where .= " AND (";
 			foreach($staff_whitelist as $flag) {
 				$where .= "flags = '".$flag."' OR ";
 			}
 			$where = rtrim(rtrim($where, " "), "OR");
+			$where .= ")";
+		}
+		if(!empty($staff_blacklist)) {
+			$where .= " AND (";
+			foreach($staff_blacklist as $flag) {
+				$where .= "flags != '".$flag."' AND ";
+			}
+			$where = rtrim(rtrim($where, " "), "AND");
 			$where .= ")";
 		}
 		$groupBy = "GROUP BY auth, flags";
