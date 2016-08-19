@@ -11,7 +11,8 @@ require_once 'app.php';
 
 //$server_ip = true;
 
-$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true));
+#$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true));
+$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, count(*) AS duration FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true));
 $key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
 $info = FileSystemCache::retrieve($key);
 if($info === false) {
@@ -19,6 +20,13 @@ if($info === false) {
 	FileSystemCache::store($key, $info, 1000);
 }
 
+$database->query('SELECT COUNT(id) as count FROM `'.DB_TABLE_PA.'`');
+$key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
+$records = FileSystemCache::retrieve($key);
+if($records === false) {
+	$records = $database->single();
+	FileSystemCache::store($key, $records, 3000);
+}
 ?>
 				<div class="row">
 					<div class="col-lg-12">
@@ -145,13 +153,13 @@ if($info === false) {
 						<div class="panel panel-red">
 							<div class="panel-heading">
 								<div class="row">
-									<div class="col-xs-3 fa fa-clock-o fa-5x"></div>
+									<div class="col-xs-3 fa fa-database fa-5x"></div>
 									<div class="col-xs-9 text-right">
 										<div class="huge">
-											<?php echo PlaytimeConDashboard($info['duration']) ?>
+											<?php echo "~".number_format($records['count']) ?>
 										</div>
 										<div>
-											Hours Played
+											Total DB records
 										</div>
 									</div>
 								</div>
