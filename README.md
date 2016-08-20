@@ -7,6 +7,11 @@ forked from Sinclair47/player_analytics https://github.com/Sinclair47/player_ana
 If you have suggestions or you found a bug -> **contact me: thechaoscoder+player-analytics[at]gmail.com**  
 (replace [at] with @, bot protection) or open an issue here
 
+## Performance
+For better SQL performance run this 2 queries:  
+ALTER TABLE player_analytics ADD INDEX (server_ip, connect_date);  
+ALTER TABLE player_analytics ADD INDEX (connect_date);
+
 ## How to install?
 Download as zip (or clone) and copy all files to your webserver.  
 Rename the file config_db_RENAME_ME.php to config_db.php in /inc and add your DB credentials.  
