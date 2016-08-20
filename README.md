@@ -9,7 +9,7 @@ If you have suggestions or you found a bug -> **contact me: thechaoscoder+player
 
 ## Performance
 For better SQL performance run this 2 queries:  
-`ALTER TABLE player_analytics ADD INDEX (server_ip, connect_date);`
+`ALTER TABLE player_analytics ADD INDEX (server_ip, connect_date);`  
 `ALTER TABLE player_analytics ADD INDEX (connect_date);`
 
 ## How to install?
