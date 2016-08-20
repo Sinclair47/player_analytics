@@ -8,7 +8,7 @@ $key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(),
 $servers = FileSystemCache::retrieve($key);
 if($servers === false) {
 	$servers = $database->resultset();
-	FileSystemCache::store($key, $servers, 1200); #600 sec = 10 min
+	FileSystemCache::store($key, $servers, 100000); #300k sec = 3.4 days
 }
 
 $force_recache = "?t1";  # change to some other random string after modding js files
@@ -76,7 +76,7 @@ $force_recache = "?t1";  # change to some other random string after modding js f
 				</button>
 				<a class="navbar-brand" href="#/">Player Analytics <span id="header_server_ip"></span></a>
 				<div style="padding-top: 8px" class="nav navbar-top-links navbar-right">
-					<select class="selectpicker form-control" multiple title="All Servers" data-size="auto" data-width="auto" data-header="Select a server" data-actions-box="true" data-selected-text-format="count > 3">
+					<select class="selectpicker form-control" multiple title="All Servers" data-size="auto" data-width="auto" data-header="Select a server" data-actions-box="true" data-count-selected-text="{0} of {1} Servers selected" data-selected-text-format="count > 2">
 						<?php foreach ($servers as $server): ?>
 							<option value="<?php echo $server['server_ip']; ?>" data-subtext="<?php echo KeyToValue($server['server_ip'], $server_sub_names, $return_empty = true); ?>"><?php echo ServerName($server['server_ip'], $server_names); ?></option>
 						<?php endforeach ?>
