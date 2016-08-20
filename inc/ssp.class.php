@@ -215,7 +215,7 @@ class SSP {
      *  @return array  Server-side processing response array
      *
      */
-    static function simple ( $request, $sql_details, $table, $primaryKey, $columns, $joinQuery = NULL, $extraWhere = '', $groupBy = '', $where2 = '')
+    static function simple ( $request, $sql_details, $table, $primaryKey, $columns, $joinQuery = NULL, $extraWhere = '', $groupBy = '', $where2 = '', $records = 0)
     {
         $bindings = array();
         $db = SSP::sql_connect( $sql_details );
@@ -311,10 +311,17 @@ class SSP {
         $recordsFiltered = $resFilterLength[0][0];
 
         // Total data set length
-        $resTotalLength = SSP::sql_exec( $db,
-            "SELECT COUNT(`{$primaryKey}`)
-             FROM   `$table`"
-        );
+        if(isset($records) && !empty($records)) {
+            $records_length[0][0] = $records;
+            $resTotalLength = $records_length;
+        } else {
+            $resTotalLength = SSP::sql_exec( $db,
+                //"SELECT COUNT(`{$primaryKey}`) # count(*) is faster but counts also null values. We don't care here much about it
+                "SELECT COUNT(*)
+                FROM   `$table`"
+            );
+        }
+        
         $recordsTotal = $resTotalLength[0][0];
 
 

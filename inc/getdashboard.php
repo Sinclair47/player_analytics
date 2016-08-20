@@ -12,7 +12,7 @@ require_once 'app.php';
 //$server_ip = true;
 
 #$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, SUM(`duration`) AS duration FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true));
-$database->query('SELECT COUNT(`auth`) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, count(*) AS duration FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true));
+$database->query('SELECT COUNT(*) AS cons, COUNT(DISTINCT(`auth`)) AS auth, COUNT(DISTINCT(`server_ip`)) AS server, COUNT(DISTINCT(`country_code`)) AS cc, count(*) AS duration FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true));
 $key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
 $info = FileSystemCache::retrieve($key);
 if($info === false) {
@@ -20,12 +20,12 @@ if($info === false) {
 	FileSystemCache::store($key, $info, 1000);
 }
 
-$database->query('SELECT COUNT(id) as count FROM `'.DB_TABLE_PA.'`');
+$database->query('SELECT COUNT(*) as count FROM `'.DB_TABLE_PA.'`');
 $key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
 $records = FileSystemCache::retrieve($key);
 if($records === false) {
 	$records = $database->single();
-	FileSystemCache::store($key, $records, 3000);
+	FileSystemCache::store($key, $records, 2000);
 }
 ?>
 				<div class="row">

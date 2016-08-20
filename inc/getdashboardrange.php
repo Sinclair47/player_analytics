@@ -17,7 +17,7 @@ $dates = Util::getCookieJson("dates");
 
 
 if ($dates['start'] == $dates['end']) {
-	$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
+	$database->query('SELECT `connect_date` AS d, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%l:00 %p") AS time, COUNT(*) AS total FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
 	$key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
 	$connections = FileSystemCache::retrieve($key);
 	if($connections === false) {
@@ -27,7 +27,7 @@ if ($dates['start'] == $dates['end']) {
 	
 }
 else {
-	$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY `connect_date`');
+	$database->query('SELECT `connect_date` AS d, `connect_date` AS time, COUNT(*) AS total FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY `connect_date`');
 	$key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
 	$connections = FileSystemCache::retrieve($key);
 	if($connections === false) {

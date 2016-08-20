@@ -25,6 +25,19 @@ $table = DB_TABLE_PA;
 
 $where = getIpDatesSql(); # "global where" for all if's in here
 
+# Total DB count from cache
+$records = 0;
+$database->query('SELECT COUNT(*) as count FROM `'.DB_TABLE_PA.'`');
+$key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
+$records = FileSystemCache::retrieve($key);
+if($records === false) {
+	$records = $database->single();
+	FileSystemCache::store($key, $records, 2000);
+}
+if(!empty($records)) {
+	$records = $records['count'];
+}
+
 if (isset($_GET['type']) && $_GET['type'] == 'getconnections') {
 
 	$primaryKey = 'id';
@@ -92,7 +105,7 @@ if (isset($_GET['type']) && $_GET['type'] == 'getconnections') {
 	require('ssp.class.php');
 
 	echo json_encode(
-		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy = '', $where)
+		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy = '', $where, $records)
 	);
 }
 
@@ -194,7 +207,7 @@ if (isset($_GET['type']) && ($_GET['type'] == 'getplayers' || $_GET['type'] == '
 	require('ssp.class.php');
 
 	echo json_encode(
-		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy, $where)
+		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy, $where, $records)
 	);
 }
 
@@ -248,7 +261,7 @@ if (isset($_GET['type']) && $_GET['type'] == 'getcountryinfo') {
 	require('ssp.class.php');
 
 	echo json_encode(
-		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition, $groupBy = '', $where = '')
+		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition, $groupBy = '', $where = '', $records)
 	);
 }
 
@@ -321,7 +334,7 @@ if (isset($_GET['type']) && $_GET['type'] == 'c') { // connections for single se
 	require('ssp.class.php');
 
 	echo json_encode(
-		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition, $groupBy = '', $where = '')
+		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition, $groupBy = '', $where = '', $records)
 	);
 }
 
@@ -394,6 +407,6 @@ if (isset($_GET['type']) && $_GET['type'] == 'u') { // Unique Players for single
 	require('ssp.class.php');
 
 	echo json_encode(
-		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy, $where)
+		SSP::simple( $_GET, $db_conn, $table, $primaryKey, $columns, $joinQuery = '', $extraCondition = '', $groupBy, $where, $records)
 	);
 }
