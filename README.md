@@ -36,8 +36,6 @@ That's it!
 > _Quote from Dr. McKay - https://forums.alliedmods.net/showpost.php?p=2350131&postcount=256_
 
 ## Todo
-* Remove/replace "Hours Played" box with something more usefull.
-* Add a simple cache function
 * Add area charts to see changes over time
 * Maybe add a Chart as in HLStatsX
 
