@@ -194,8 +194,18 @@ function processConnectMethods($method) {
 	if(isset($methods)) {
 		foreach ($methods as $key => $value) {
 			$methods[$key]['label'] = ConnMethod($value['label']);
-			$methods[$key]['value'] = number_format($value['value']/$m_total*100,2);
+			$methods[$key]['value'] = number_format($value['value'] / $m_total * 100, 2);
+
+			$methods_l[$key] = $methods[$key]['label'];
+			$methods_v[$key] = $methods[$key]['value'];
 		}
+		
+		#sort by value
+		array_multisort(
+				$methods_l, SORT_DESC, SORT_NUMERIC,
+				$methods_v, SORT_ASC, SORT_NUMERIC, 
+			$methods
+		);
 	}
 
 	return $methods;
