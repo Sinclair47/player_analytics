@@ -24,6 +24,15 @@ crossroads.addRoute('/stats/maps', function() {
     pageLoader( "inc/getMap.php" );
 });
 
+
+crossroads.addRoute('/lab', function() {
+    pageLoader( "inc/lab.php" );
+});
+crossroads.addRoute('/lab/{tab_id}', function(tab_id) {
+        pageLoader( "inc/lab.php?tab_id="+tab_id );
+});
+
+
 // crossroads.addRoute('/user/{userId}', function(userId) {
 //     pageLoader( "inc/getconnections.php" );
 // });
@@ -35,10 +44,10 @@ crossroads.routed.add(console.log, console); //log all routes
 
 
 function pageLoader(url) {
-    //$('#overlay').fadeIn("fast");
+    $('#overlay').fadeIn("fast");
 	$('#content').empty();
     $('#content').load( url );
-    //$('#overlay').delay(200).fadeOut( "slow" );
+    $('#overlay').delay(200).fadeOut( "slow" );
 
     //var cookie = getCookie("server");
     //console.log("js cookie: " + cookie);
