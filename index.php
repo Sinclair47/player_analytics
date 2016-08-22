@@ -11,7 +11,7 @@ if($servers === false) {
 	FileSystemCache::store($key, $servers, 100000); #300k sec = 3.4 days
 }
 
-$force_recache = "?t1";  # change to some other random string after modding js files
+$force_recache = "?t2";  # change to some other random string after modding js files
 ?>
 
 <!DOCTYPE html>

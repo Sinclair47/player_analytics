@@ -33,9 +33,7 @@ crossroads.addRoute('/lab/{tab_id}', function(tab_id) {
 });
 
 
-// crossroads.addRoute('/user/{userId}', function(userId) {
-//     pageLoader( "inc/getconnections.php" );
-// });
+
 crossroads.bypassed.add(function(request) {
     $( "#content" ).load( "error.php" );
     console.log(request + ' seems to be a dead end...');
@@ -46,8 +44,10 @@ crossroads.routed.add(console.log, console); //log all routes
 function pageLoader(url) {
     $('#overlay').fadeIn("fast");
 	$('#content').empty();
-    $('#content').load( url );
-    $('#overlay').delay(200).fadeOut( "slow" );
+    $('#content').load( url , function() {
+        $('#overlay').delay(200).fadeOut( "slow" );
+    });
+    //$('#overlay').delay(200).fadeOut( "slow" );
 
     //var cookie = getCookie("server");
     //console.log("js cookie: " + cookie);
