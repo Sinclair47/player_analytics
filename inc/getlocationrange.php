@@ -18,10 +18,15 @@ $database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `'.DB_TABLE
 $map = $database->resultset();
 
 
-foreach ($map as $key => $value) {
-	if ($value['country_code'] != NULL) {
-		$maps[$value['country_code']] = $value['total'];
+$maps = "";
+if(!empty($map)) {
+	foreach ($map as $key => $value) {
+		if ($value['country_code'] != NULL) {
+			$maps[$value['country_code']] = $value['total'];
+		}
 	}
+} else {
+	echo '<p class="bg-warning" style="padding:15px">No data available.</p>';
 }
 
 $maps = json_encode($maps);
