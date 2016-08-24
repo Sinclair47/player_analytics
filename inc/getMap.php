@@ -14,7 +14,7 @@ $key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(),
 $map_stats = FileSystemCache::retrieve($key);
 if($map_stats === false) {
 	$map_stats = $database->resultset();
-	FileSystemCache::store($key, $map_stats, 2000);
+	FileSystemCache::store($key, $map_stats, 400);
 }
 
 $chart_data_final = "";
