@@ -65,7 +65,7 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 <body>
 	<div id="wrapper">
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
+		<nav class="navbar navbar-default navbar-fixed-top" style="margin-bottom: 0">
 			<div class="navbar-header">
 
 
@@ -157,7 +157,7 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 		</nav>
 		<div id="page-wrapper">
 			<div id="overlay"><i class="fa fa-spinner fa-spin fa-5x"></i></div>
-			<div id="content">
+			<div id="content" style="margin-top: 24px">
 
 			</div>
 		</div><!-- /#page-wrapper -->
