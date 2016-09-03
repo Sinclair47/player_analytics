@@ -30,6 +30,7 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 	<link href="css/daterangepicker.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css">
 	<style>
 		#overlay {
 		  position:absolute;
@@ -145,6 +146,9 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 							<a href="#/stats/staff"><i class="fa fa-shield fa-fw"></i> Staff</a>
 						</li>
 						<li class="menu">
+							<a href="#/stats/servers"><i class="fa fa-map-marker fa-fw"></i> Servers</a>
+						</li>
+						<li class="menu">
 							<a href="#/stats/maps"><i class="fa fa-map-marker fa-fw"></i> Maps</a>
 						</li>
 						<li class="menu">
@@ -184,6 +188,7 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.bundle.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
 
 	<script type="text/javascript">
 
