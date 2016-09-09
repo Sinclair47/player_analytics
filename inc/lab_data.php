@@ -25,7 +25,6 @@ switch($_GET['id']) {
 		$database->query('SELECT id, auth, name, connect_time, map, duration  FROM `'.DB_TABLE_PA.'` WHERE '.getIpDatesSql(false).' '.$flags.'  ORDER BY connect_time ASC');
 		$timeline_data_raw = $database->resultset();
 
-
 		#$timeline_data['data'] = "";
 		$timeline_data = array();
 		$timeline_data_maps = array();
@@ -92,7 +91,7 @@ switch($_GET['id']) {
 		$cnt = count($timeline_data);
 		for($i = 0; $i < $cnt; $i++)
 		{
-			for($j = $i + 0; $j < ($i + 40); $j++) #compare current user with the next X users. If it's the same user and we detect a map change => merge into one user & reset time.
+			for($j = $i + 1; $j < ($i + 40); $j++) #compare current user with the next X users. If it's the same user and we detect a map change => merge into one user & reset time.
 			{
 				if(isset($timeline_data[$j]))
 				{
