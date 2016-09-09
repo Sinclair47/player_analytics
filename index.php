@@ -1,8 +1,11 @@
 <?php
 
 require_once 'inc/app.php';
-
-$database->query('SELECT DISTINCT `server_ip` FROM `'.DB_TABLE_PA.'` ORDER BY server_ip');
+$hide_servers = "";
+if($hide_inactive_servers_days > 0) {
+	$hide_servers = " WHERE connect_date > DATE_SUB(NOW(), INTERVAL $hide_inactive_servers_days DAY) ";
+}
+$database->query('SELECT DISTINCT `server_ip` FROM `'.DB_TABLE_PA.'` '. $hide_servers .' ORDER BY server_ip');
 
 $key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
 $servers = FileSystemCache::retrieve($key);
@@ -145,9 +148,9 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 						<li class="menu">
 							<a href="#/stats/staff"><i class="fa fa-shield fa-fw"></i> Staff</a>
 						</li>
-						<li class="menu">
+						<!--<li class="menu">
 							<a href="#/stats/servers"><i class="fa fa-map-marker fa-fw"></i> Servers</a>
-						</li>
+						</li>-->
 						<li class="menu">
 							<a href="#/stats/maps"><i class="fa fa-map-marker fa-fw"></i> Maps</a>
 						</li>

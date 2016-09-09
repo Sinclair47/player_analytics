@@ -22,7 +22,9 @@ if(!is_array($server_names) || !is_array($staff_group_names) || !is_array($staff
 if(!empty($staff_whitelist) && !empty($staff_blacklist)) {
 	die("<h2>You can not combine white and black list!</h2>");
 }
-
+if(!is_numeric($hide_inactive_servers_days)) {
+	die("<h2>Your inactive servers var is incorrect. Use numbers like 7!</h2>");
+}
 
 $db = new DbManager($databases);
 #$database = new medoo($db->getCurrentDb());

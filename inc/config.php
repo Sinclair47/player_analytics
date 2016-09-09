@@ -11,6 +11,7 @@ ini_set('default_charset', 'utf-8');
 
 $Title = "Player Analytics";
 $Show_Max_Countries = 10; # Top 10 Countries
+$hide_inactive_servers_days = 0; # Hide servers that are 'inactive' since X Days
 
 const STEAM_APIKEY  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; # add your key (optional)
 
