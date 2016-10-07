@@ -242,7 +242,7 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 
 			$('#dbswitcher a').on('click', function() {
 				var db_index = $(this).attr('data-db');
-				setCookie("db", db_index, 60);
+				setCookie("db", db_index, 30);
 				deleteCookie("server");
 				//crossroads.parse(hasher.getHash());
 				$('#overlay').fadeIn("fast");
@@ -250,10 +250,10 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 			});
 		});
 
-		function setCookie(cname,cvalue,exdays) {
+		function setCookie(cname, cvalue, ex_minutes) {
 			var d = new Date();
-			d.setTime(d.getTime() + (exdays*24*60*60*1000));
-			//console.log(d);
+			d.setTime(d.getTime() + (ex_minutes*60*1000));//(ex_minutes*24*60*60*1000));
+			console.log("exp: " + d);
 			var expires = "expires=" + d.toGMTString();
 			var c = cname+"="+cvalue+"; "+expires + "; "+"/player_analytics"
 			document.cookie = c;
@@ -297,7 +297,7 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 					"start": s.format('YYYY-M-D'),
 					"end": e.format('YYYY-M-D')
 				}
-				setCookie("dates", JSON.stringify(dates), 60);
+				setCookie("dates", JSON.stringify(dates), 30);
 			}
 
 			$('#reportrange').daterangepicker(
@@ -326,7 +326,7 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 					"end": picker.endDate.format('YYYY-M-D')
 				}
 				//console.log("dates:  " + JSON.stringify(dates));
-				setCookie("dates", JSON.stringify(dates), 60);
+				setCookie("dates", JSON.stringify(dates), 30);
 				crossroads.parse(hasher.getHash()); // reload current page (only content)
 			});
 		});
