@@ -1,3 +1,8 @@
+/!\ Don't expect updates except fixes for critical bugs. I don't host TF2 servers anymore, so... 
+
+And don't forget "GeoIPCity" for proper Location support! 
+If you have permission errors try to create the /cache/SQL folder manually.
+
 # player_analytics
 This is a webpanel for the sourcemod plugin **[ANY] Player Analytics** by Dr. McKay
 https://forums.alliedmods.net/showthread.php?t=230832
