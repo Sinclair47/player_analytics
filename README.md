@@ -3,6 +3,8 @@
 And don't forget "GeoIPCity" for proper Location support! 
 If you have permission errors try to create the /cache/SQL folder manually.
 
+Oh and you can safely delete cache files at any time. There is no auto clean for old cache files!
+
 # player_analytics
 This is a webpanel for the sourcemod plugin **[ANY] Player Analytics** by Dr. McKay
 https://forums.alliedmods.net/showthread.php?t=230832
