@@ -49,7 +49,7 @@ if(!empty($map_stats)) {
 
 
 function processData($chart_data, $kind = "", $count = 4) {
-    $chart_data_final = "";
+    $chart_data_final = [];
     $max = 0;
     foreach($chart_data as $ip => $data) {
         if(is_array($data)) {
