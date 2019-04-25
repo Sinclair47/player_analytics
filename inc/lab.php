@@ -156,7 +156,7 @@ $active_class = "active";
 										.domain([0, 1])
 
 									var svg = d3.select(".calender-map").selectAll("svg")
-										.data(d3.range(<?php echo date("Y") - 3 ?>, <?php echo date("Y") ?>))
+										.data(d3.range(<?php echo date("Y") - 2 ?>, <?php echo date("Y") + 1 ?>))
 									.enter().append("svg")
 										.attr("width", '100%')
 										.attr("data-height", '0.5678')
