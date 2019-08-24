@@ -1,6 +1,14 @@
 <?php
-
 require_once 'inc/app.php';
+
+if(MUST_LOG_IN) {
+    require_once(__DIR__ . DIRECTORY_SEPARATOR . "inc" . DIRECTORY_SEPARATOR . "auth.php");
+    if (!$Auth->IsUserLoggedIn()) {
+        header("Location: ./auth.php?action=login");
+        exit;
+    }
+}
+
 $hide_servers = "";
 if($hide_inactive_servers_days > 0) {
 	$hide_servers = " WHERE connect_date > DATE_SUB(NOW(), INTERVAL $hide_inactive_servers_days DAY) ";
@@ -125,6 +133,9 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 
 			<div style="padding-top: 15px; margin-right: 24px;" class="pull-right">
 				<div id="reportrange" class="pull-right">
+                    <?php if ( MUST_LOG_IN) { ?>
+                        <a href="auth.php?action=logout"><i class="fa fa-user"></i> Logout</a> |
+                    <?php } ?>
 					<i class="fa fa-calendar fa-lg"></i>
 					<span><?php echo date("F j, Y", strtotime('-7 day')); ?> - <?php echo date("F j, Y"); ?></span> <b class="caret"></b>
 				</div>
