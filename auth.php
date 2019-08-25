@@ -13,10 +13,6 @@ switch ($action){
         break;
 }
 
-function MustBeLoggedIn(){
-    return MUST_LOG_IN;
-}
-
 function Login(SteamAuth $auth){
     if( !$auth->IsUserLoggedIn() ) {
         $auth->RedirectLogin();

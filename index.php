@@ -4,7 +4,7 @@ require_once 'inc/app.php';
 if(MUST_LOG_IN) {
     require_once(__DIR__ . DIRECTORY_SEPARATOR . "inc" . DIRECTORY_SEPARATOR . "auth.php");
     if (!$Auth->IsUserLoggedIn()) {
-        header("Location: ./auth.php?action=login");
+        header("Location: ./login.php");
         exit;
     }
 }
@@ -32,13 +32,13 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<title><?php echo $Title ?></title>
-	<link href="css/bootstrap.min.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
-	<link href="css/dataTables.bootstrap.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
-	<link href="css/sb-admin-2.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
-	<link href="css/morris.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
-	<link href="font-awesome/css/font-awesome.min.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
-	<link href="css/jquery-jvectormap-1.2.2.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
-	<link href="css/daterangepicker.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="assets/css/dataTables.bootstrap.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="assets/css/sb-admin-2.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="assets/css/morris.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/jquery-jvectormap-1.2.2.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="assets/css/daterangepicker.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css">
@@ -185,20 +185,20 @@ $force_recache = "?t2";  # change to some other random string after modding js f
 
 	</div><!-- /Modal -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/moment.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/daterangepicker.js<?php echo $force_recache ?>"></script>
-	<script src="js/signals.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/hasher.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/crossroads.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/plugins/morris/raphael.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/plugins/morris/morris.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/plugins/dataTables/jquery.dataTables.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/plugins/dataTables/dataTables.bootstrap.js<?php echo $force_recache ?>"></script>
-	<script src="js/plugins/jvectormaps/jquery-jvectormap-1.2.2.min.js<?php echo $force_recache ?>"></script>
-	<script src="js/plugins/jvectormaps/jquery-jvectormap-world-merc-en.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/bootstrap.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/moment.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/daterangepicker.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/signals.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/hasher.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/crossroads.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/plugins/morris/raphael.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/plugins/morris/morris.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/plugins/dataTables/jquery.dataTables.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/plugins/dataTables/dataTables.bootstrap.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/plugins/jvectormaps/jquery-jvectormap-1.2.2.min.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/plugins/jvectormaps/jquery-jvectormap-world-merc-en.js<?php echo $force_recache ?>"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
-	<script src="js/app.js<?php echo $force_recache ?>"></script>
+	<script src="assets/js/app.js<?php echo $force_recache ?>"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.bundle.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
