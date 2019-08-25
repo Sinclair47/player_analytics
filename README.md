@@ -25,6 +25,11 @@ Rename the file config_db_RENAME_ME.php to config_db.php in /inc and add your DB
  
 That's it!
 
+### Login
+To enable log in only edit `config.php` line `16`:
+
+Change the value of `MUST_LOG_IN` to `true` and to disable it change it to `false`.
+
 ## Connect method
 > ### What is the difference between Quickplay and Quickpick?
 > **Quickplay** = You click a button and get placed into a random server that has QP enabled  
