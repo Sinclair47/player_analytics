@@ -10,8 +10,8 @@ require_once(__DIR__ . DIRECTORY_SEPARATOR . "inc" . DIRECTORY_SEPARATOR . "auth
 	<meta content="IE=edge" http-equiv="X-UA-Compatible">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 	<title><?php echo $Title ?></title>
-	<link href="assets/css/bootstrap.min.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
-	<link href="assets/css/sb-admin-2.css<?php echo $force_recache ?>" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/sb-admin-2.css" rel="stylesheet" type="text/css">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 </head>
