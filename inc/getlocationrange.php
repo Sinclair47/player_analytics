@@ -18,7 +18,7 @@ $database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `'.DB_TABLE
 $map = $database->resultset();
 
 
-$maps = "";
+$maps = array();
 if(!empty($map)) {
 	foreach ($map as $key => $value) {
 		if ($value['country_code'] != NULL) {
