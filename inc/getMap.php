@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') 
+if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
 {
     header("Location: ../index.php?error=".urlencode("Direct access not allowed."));
     die();
@@ -53,8 +53,8 @@ function processData($chart_data, $kind = "", $count = 4) {
     $max = 0;
     foreach($chart_data as $ip => $data) {
         if(is_array($data)) {
-            
-            
+
+
             $i = 0;
             $total_sum = 0;
             foreach($data as $x) {
@@ -90,7 +90,7 @@ function processData($chart_data, $kind = "", $count = 4) {
                 if($i++ > $count) {
                     continue;
                 }
-                
+
                 if($kind == "sum") {
                     $chart_data_final[$ip]["Total Playtime (in hours)"][] = round($value['play_time_sum']/60/60, 1);# / $total_sum * 100;
                 }
@@ -101,10 +101,10 @@ function processData($chart_data, $kind = "", $count = 4) {
                     $chart_data_final[$ip]["AVG Playtime (in minutes)"][] = round($value['play_time_avg']/60, 1);
                 }
                 $chart_data_final_category[$ip][] = $value['map'];
-                
+
             }
         }
-        
+
     }
     return array($chart_data_final, $chart_data_final_category, $max);
 }
@@ -141,7 +141,7 @@ function sortByAvgPlayTime($a, $b){
                                         if(!empty($map_stats)) {
                                             foreach ($chart_data_final as $ip => $data) { ?>
                                                 <div class="row" style="margin-bottom: 5px">
-                                                    <h3 class="col-lg-12"><?php echo $ip; ?></h3>
+                                                    <h3 class="col-lg-12"><?php echo ServerName($ip, $server_names); ?></h3>
                                                     <div class="col-lg-4" id="chart_map_avg_<?php echo md5($ip) ?>"></div>
                                                     <div class="col-lg-4" id="chart_map_avg_play_<?php echo md5($ip) ?>"></div>
                                                     <div class="col-lg-4" id="chart_map_sum_<?php echo md5($ip) ?>"></div>
@@ -149,7 +149,7 @@ function sortByAvgPlayTime($a, $b){
                                     <?php }} else {
                                         echo '<p class="bg-warning" style="padding:15px">No Maps Data</p>';
                                     } ?>
-                                                                        
+
 								</div>
 							</div><!-- /.panel-body -->
 						</div><!-- /.panel -->
@@ -158,7 +158,7 @@ function sortByAvgPlayTime($a, $b){
 
                 <script type="text/javascript">
                     $(document).ready(function() {
-                        <?php 
+                        <?php
                             foreach ($chart_data_final as $ip => $data) {
                                 echo 'createChart("#chart_map_avg_'.md5($ip).'", '.json_encode($chart_data_final_avg[$ip]).', '.json_encode($chart_data_final_category_avg[$ip]).', "avg", '.$max_avg.');';
                                 echo 'createChart("#chart_map_avg_play_'.md5($ip).'", '.json_encode($chart_data_final_avg_playtime[$ip]).', '.json_encode($chart_data_final_category_avg_playtime[$ip]).', "avg_play", '.$max_avg_play_time.');';
@@ -166,7 +166,7 @@ function sortByAvgPlayTime($a, $b){
                             }
                         ?>
                     });
-               
+
                     function createChart(chart_id, columns_data, category_data, type, max ) {
                         var chart = c3.generate({
                             bindto: chart_id,
@@ -211,5 +211,5 @@ function sortByAvgPlayTime($a, $b){
                             chart.axis.max({y: max});
                     // }
                     }
-                    
+
                 </script>

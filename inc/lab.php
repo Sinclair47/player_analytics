@@ -123,9 +123,9 @@ $active_class = "active";
 
 					<ul class="nav nav-tabs">
 						<li class="<?php if($tab_id == 1) echo $active_class ?>"><a href="#/lab/1">Calender View</a></li>
-						<li class="<?php if($tab_id == 2) echo $active_class ?>"><a href="#/lab/2">Hlststs chart</a></li>
+						<!--<li class="<?php if($tab_id == 2) echo $active_class ?>"><a href="#/lab/2">Hlststs chart</a></li>-->
 						<li class="<?php if($tab_id == 3) echo $active_class ?>"><a href="#/lab/3">Timeline</a></li>
-						<li class="<?php if($tab_id == 4) echo $active_class ?>"><a href="#/lab/4">Menu 3</a></li>
+						<!--<li class="<?php if($tab_id == 4) echo $active_class ?>"><a href="#/lab/4">Menu 3</a></li>-->
 					</ul>
 					<div id="chart_content" class="panel-body">
 						<?php
@@ -354,7 +354,7 @@ $active_class = "active";
 												LoadTimelineDataAsync($( "#timeline-select" ).val());
 											});
 
-											
+
 
 											document.getElementById('fit').onclick = function() {
 												timeline.fit();
