@@ -1,94 +1,52 @@
 <?php
 
+# Player Analytics config file
+# If you have suggestions or you found a bug -> contact me: thechaoscoder+player-analytics[at]gmail.com (replace [at] with @, bot protection)
+# or open an issue here https://github.com/theChaosCoder/player_analytics
+
+
+
 //Set encoding
 ini_set('default_charset', 'utf-8');
 
-//Database Info
-define("DB_HOST",  'localhost');
-define("DB_USER",  'USER');
-define("DB_PASS",  'PASSWORD');
-define("DB_NAME",  'DATABASE');
-define("DB_PORT",  '3306');
+$Title = "Player Analytics";
+$Show_Max_Countries = 10; # Top 10 Countries
+$hide_inactive_servers_days = 0; # Hide servers that are 'inactive' since X Days
 
-$Home = "/";
-$Title = "Title";
+const MUST_LOG_IN = false;
+const STEAM_APIKEY  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'; # add your key (optional)
 
-const STEAM_APIKEY  = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+# optional - replace ip with your server name
+$server_names = [
+    "your_ip:port"  => "Server name",
+    "2.2.2.2"       => "TRADE & IDLE SERVER",
+    "3.3.3.3:20715" => "WaffleTown",
+    "4.4.4.4"       => "Chew Chew Train - 24/7 ChewChew",
+];
 
-function ServerName($key)
-{
-  $servers = array(
-    "1.1.1.1" => "24/7 2FORT",
-    "2.2.2.2" => "TRADE & IDLE SERVER",
-    "3.3.3.3" => "WaffleTown",
-    "4.4.4.4" => "Chew Chew Train - 24/7 ChewChew",
-    "5.5.5.5" => "Black Server",
-  );
+# A name that will appears in nav below the ip
+# Only usefull if you don't want to use server_names
+$server_sub_names = [
+    "your_ip:port"  => "Server name",
+    "2.2.2.2"       => "TRADE & IDLE SERVER",
+    "3.3.3.3:20715" => "WaffleTown",
+];
 
-  if (array_key_exists($key, $servers)) {
-    return $servers[$key];
-  }
-  else {
-    return $key;
-  }
-}
+# Replace flags like z, bce with a name like VIP, Admin etc.
+$staff_group_names = [
+    #"z"   => "Super Admin (z)",
+    #"bce"  => "VIP (bce)",
+];
 
-function SteamTo64($key) 
-{ 
-  if (preg_match('/^\[U:[0-9]:([0-9]+)\]$/', $key, $matches)) {
-    $key = '7656'.(1197960265728 + $matches[1]);
-    return $key;
-  }
-  else {
-    $key = '7656'.(((substr($key, 10)) * 2) + 1197960265728 + (substr($key, 8, 1)));
-    return $key;
-  }
-}
 
-function ToSteam64($key) 
-{
-  $key = ((substr($key, 4) - 1197960265728) / 2);
-  if(strpos( $key, "." )) {$int = 1;}
-  else{$int = 0;}
-  $key = 'STEAM_0:'.$int.':'.floor($key);
-  return $key; 
-}
-
-function GetPlayerInformation($key)
-{
-  $url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=".STEAM_APIKEY."&steamids=".$key."&format=json";
-
-  $data = file_get_contents($url);
-  $information = json_decode($data, true);
-
-  return $information['response']['players'][0];
-}
-
-function StatCon($key,$lock)
-{
-  if ($lock == 0) {
-    return "$key";
-  }
-  elseif ($key == 0) {
-    return "0";
-  }
-  else {
-    return round("$key"/"$lock", 2);
-  }
-}
-
-function PlaytimeCon($key)
-{
-  return floor($key/3600).gmdate(':i:s',$key);
-}
-
-function ConnMethod($key) 
-{
-  if (preg_match("/quickplay/", $key)) {
-    $key = 'quickplay';
-  }
-  $ConnMethod = array("steam" => "SteamURL","serverbrowser_history" => "History","serverbrowser_favorites" => "Favorites","serverbrowser_internet" => "Internet","quickplay" => "Quickplay","serverbrowser_lan" => "Lan","serverbrowser_friends" => "Friends","matchmaking" => "Matchmaking","redirect" => "Redirect","" => "Console");
-  return $ConnMethod[$key];
-}
-
-?>
+# Show only records with the following flags:
+$staff_whitelist = [
+    #"z",
+    #"abc",
+];
+# You can not combine white and black list!
+# Hide records with the following flags:
+$staff_blacklist = [
+    #"z",
+    #"abc",
+];

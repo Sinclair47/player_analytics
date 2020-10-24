@@ -1,16 +1,22 @@
 <?php
 class Database{
 	private $stmt;
-	private $host 	= DB_HOST;
-	private $user 	= DB_USER;
-	private $pass 	= DB_PASS;
-	private $dbname = DB_NAME;
-	private $port 	= DB_PORT;
+	private $host;
+	private $user;
+	private $pass;
+	private $dbname;
+	private $port;
 
 	private $dbh;
 	private $error;
 
-	public function __construct(){
+	public function __construct($dbinfo){
+		$this->host = $dbinfo['host'];
+		$this->port = $dbinfo['port'];
+		$this->dbname = $dbinfo['database_name'];
+		$this->user = $dbinfo['username'];
+		$this->pass = $dbinfo['password'];
+
         // Set DSN
         $dsn = 'mysql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->dbname;
         // Set options
@@ -21,7 +27,7 @@ class Database{
         );
         // Create a new PDO instanace
         try{
-            $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
+            @$this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         }
         // Catch any errors
         catch(PDOException $e){
@@ -53,6 +59,7 @@ class Database{
 	}
 
 	public function execute(){
+		#$file = file_get_contents("sql_log_dbclass.txt");   file_put_contents("sql_log_dbclass.txt", "\n### ".date('Y-m-d H:i:s')." ### \n". print_r($this->stmt->debugDumpParams())."\n" . $file);
 		return $this->stmt->execute();
 	}
 
@@ -88,5 +95,8 @@ class Database{
 
 	public function debugDumpParams(){
 		return $this->stmt->debugDumpParams();
+	}
+	public function stmt(){
+		return json_encode($this->stmt);
 	}
 }
