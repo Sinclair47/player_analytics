@@ -135,7 +135,7 @@ class SSP {
      *
      *  @return string SQL where clause
      */
-    static function filter ( $request, $columns, &$bindings, $isJoin = false, $groupBy)
+    static function filter ( $request, $columns, &$bindings, $isJoin = false, $groupBy = null)
     {
         $globalSearch = array();
         $columnSearch = array();
