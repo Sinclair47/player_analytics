@@ -301,7 +301,8 @@ class SSP {
              $limit"; 
             }
         }
-
+        $remove_full_group_for_query = "SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''))";
+        SSP::sql_exec( $db, null,$remove_full_group_for_query);
         $data = SSP::sql_exec( $db, $bindings,$query);
 
         // Data set length after filtering
