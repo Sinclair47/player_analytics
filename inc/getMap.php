@@ -9,7 +9,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 require_once 'app.php';
 
 #TODO limit Group By results
-$database->query('SELECT server_ip, connect_date, count(*) as total, sum(duration) as play_time_sum, avg(duration) as play_time_avg, AVG(numplayers) as numplayers_avg, max(numplayers), map FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY server_ip, map ORDER BY play_time_sum DESC');
+$database->query('SELECT server_ip, count(*) as total, sum(duration) as play_time_sum, avg(duration) as play_time_avg, AVG(numplayers) as numplayers_avg, max(numplayers), map FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY server_ip, map ORDER BY play_time_sum DESC');
 $key = FileSystemCache::generateCacheKey(sha1(serialize(array($database->stmt(), $db))), 'SQL');
 $map_stats = FileSystemCache::retrieve($key);
 if($map_stats === false) {
