@@ -26,9 +26,10 @@ Rename the file config_db_RENAME_ME.php to config_db.php in /inc and add your DB
 That's it!
 
 ### Login
-To enable log in only edit `config.php` line `16`:
+To activate login-only mode, edit `inc/config.php` line `16`:
 
 Change the value of `MUST_LOG_IN` to `true` and to disable it change it to `false`.
+Add each person (SteamID) to `inc/admins.php` who is allowed to log in.
 
 ## Connect method
 > ### What is the difference between Quickplay and Quickpick?
