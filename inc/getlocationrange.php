@@ -6,30 +6,27 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
     die();
 }
 
-//Database Info
-include 'config.php';
+require_once 'app.php';
 
-// Include database class
-include 'database.class.php';
 
-if (!isset($_GET['id'])) {
-	$_GET['id'] = date("Y-m-d", strtotime('-7 day')).",".date("Y-m-d");
-}
+// if (!isset($_GET['id'])) {
+// 	$_GET['id'] = date("Y-m-d", strtotime('-7 day')).",".date("Y-m-d");
+// }
 
-$date = explode(",", $_GET['id']);
 
-// Instantiate database.
-$database = new Database();
-
-$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `player_analytics` WHERE `connect_date` BETWEEN  :start AND :end GROUP BY `country_code`');
-$database->bind(':start', $date[0]);
-$database->bind(':end', $date[1]);
+$database->query('SELECT `country_code`, COUNT(`auth`) AS total FROM `'.DB_TABLE_PA.'` '.getIpDatesSql($include_where = true).' GROUP BY `country_code`');
 $map = $database->resultset();
 
-foreach ($map as $key => $value) {
-	if ($value['country_code'] != NULL) {
-		$maps[$value['country_code']] = $value['total'];
+
+$maps = array();
+if(!empty($map)) {
+	foreach ($map as $key => $value) {
+		if ($value['country_code'] != NULL) {
+			$maps[$value['country_code']] = $value['total'];
+		}
 	}
+} else {
+	echo '<p class="bg-warning" style="padding:15px">No data available.</p>';
 }
 
 $maps = json_encode($maps);

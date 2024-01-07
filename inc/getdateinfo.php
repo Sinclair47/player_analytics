@@ -6,22 +6,25 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
     die();
 }
 
-//Database Info
-include 'config.php';
+require_once 'app.php';
 
-// Include database class
-include 'database.class.php';
+
 
 if (!isset($_GET['id'])) {
 	die;
 }
 
-// Instantiate database.
-$database = new Database();
-
-$database->query('SELECT `server_ip`, COUNT(`auth`) AS connections, COUNT(DISTINCT(`auth`)) AS players, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%p %I:00") AS time FROM `player_analytics` WHERE `connect_date` = :id GROUP BY `server_ip`, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H") ORDER BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
-$database->bind(':id', $_GET['id']);
-$connections = $database->resultset();
+if (!empty(getServerIpsSql())) {
+	$server_ip = $_GET['server'];
+	$database->query('SELECT `server_ip`, COUNT(`auth`) AS connections, COUNT(DISTINCT(`auth`)) AS players, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%p %I:00") AS time FROM `'.DB_TABLE_PA.'` WHERE '.getServerIpsSql(false, '', 'AND').' `connect_date` = :id GROUP BY `server_ip`, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H") ORDER BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
+	$database->bind(':id', $_GET['id']);
+	$connections = $database->resultset();
+}
+else {
+	$database->query('SELECT `server_ip`, COUNT(`auth`) AS connections, COUNT(DISTINCT(`auth`)) AS players, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%p %I:00") AS time FROM `'.DB_TABLE_PA.'` WHERE `connect_date` = :id GROUP BY `server_ip`, DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H") ORDER BY DATE_FORMAT(FROM_UNIXTIME(`connect_time`), "%H")');
+	$database->bind(':id', $_GET['id']);
+	$connections = $database->resultset();
+}
 ?>
 
 <div class="modal-dialog modal-lg">
@@ -47,7 +50,7 @@ $connections = $database->resultset();
 <?php foreach ($connections as $connections): ?>
 					<tr>
 						<td><?php echo $connections['time']; ?></td>
-						<td><?php echo ServerName($connections['server_ip']); ?></td>
+						<td><?php echo ServerName($connections['server_ip'], $server_names); ?></td>
 						<td style="text-align:center;"><?php echo $connections['connections']; ?></td>
 						<td style="text-align:center;"><?php echo $connections['players']; ?></td>
 					</tr>

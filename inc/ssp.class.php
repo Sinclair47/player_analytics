@@ -135,7 +135,7 @@ class SSP {
      *
      *  @return string SQL where clause
      */
-    static function filter ( $request, $columns, &$bindings, $isJoin = false, $groupBy)
+    static function filter ( $request, $columns, &$bindings, $isJoin = false, $groupBy = null)
     {
         $globalSearch = array();
         $columnSearch = array();
@@ -190,6 +190,7 @@ class SSP {
 
         if ( $where !== '' && $groupBy !== '' ) {
             $where = 'HAVING '.$where;
+            #$where = 'WHERE '.$where;
         }
 
         return $where;
@@ -214,7 +215,7 @@ class SSP {
      *  @return array  Server-side processing response array
      *
      */
-    static function simple ( $request, $sql_details, $table, $primaryKey, $columns, $joinQuery = NULL, $extraWhere = '', $groupBy = '')
+    static function simple ( $request, $sql_details, $table, $primaryKey, $columns, $joinQuery = NULL, $extraWhere = '', $groupBy = '', $where2 = '', $records = 0)
     {
         $bindings = array();
         $db = SSP::sql_connect( $sql_details );
@@ -232,14 +233,34 @@ class SSP {
             $extraWhere = ($where) ? ' AND '.$extraWhere : ' WHERE '.$extraWhere;
         }
 
+        #my WHERE hack
+        $add_where = '';
+        if(!empty($where2)) {
+            if(empty($where)) {
+                $add_where = " WHERE ";
+            } else {
+                if(substr(trim($where),0,6) == "HAVING") {
+                    $add_where = " WHERE ";
+                } else {
+                    $add_where = " AND ";
+                }
+            }
+        }
+        if(!empty($where2)) {
+            $add_where .= " ".$where2." ";
+        }
+        #pr($where); die;
+
         // Main query to actually get the data
         if($joinQuery){
             
             $col = SSP::pluck($columns, 'db', $joinQuery);
 
             if ($groupBy !== '') {
+               # echo "b1 ";
                 $query =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $col)."
                  $joinQuery
+                 $add_where
                  $groupBy
                  $where
                  $extraWhere
@@ -247,9 +268,11 @@ class SSP {
                  $limit";
             } 
             else {
+               # echo "b2 ";
                 $query =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", $col)."
                  $joinQuery
                  $where
+                 $add_where
                  $extraWhere
                  $order
                  $limit";
@@ -257,8 +280,10 @@ class SSP {
         }
         else{
             if ($groupBy !== '') {
+                #echo "b3 ";
             $query =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", SSP::pluck($columns, 'db'))."
              FROM `$table`
+             $add_where
              $groupBy
              $where
              $extraWhere
@@ -266,15 +291,18 @@ class SSP {
              $limit";
             }
             else {
+              #  echo "b4 ";
             $query =  "SELECT SQL_CALC_FOUND_ROWS ".implode(", ", SSP::pluck($columns, 'db'))."
              FROM `$table`
              $where
+             $add_where
              $extraWhere
              $order
              $limit"; 
             }
         }
-
+        $remove_full_group_for_query = "SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''))";
+        SSP::sql_exec( $db, null,$remove_full_group_for_query);
         $data = SSP::sql_exec( $db, $bindings,$query);
 
         // Data set length after filtering
@@ -284,10 +312,17 @@ class SSP {
         $recordsFiltered = $resFilterLength[0][0];
 
         // Total data set length
-        $resTotalLength = SSP::sql_exec( $db,
-            "SELECT COUNT(`{$primaryKey}`)
-             FROM   `$table`"
-        );
+        if(isset($records) && !empty($records)) {
+            $records_length[0][0] = $records;
+            $resTotalLength = $records_length;
+        } else {
+            $resTotalLength = SSP::sql_exec( $db,
+                //"SELECT COUNT(`{$primaryKey}`) # count(*) is faster but counts also null values. We don't care here much about it
+                "SELECT COUNT(*)
+                FROM   `$table`"
+            );
+        }
+        
         $recordsTotal = $resTotalLength[0][0];
 
 
@@ -355,6 +390,9 @@ class SSP {
 
         $stmt = $db->prepare( $sql );
         #echo $sql;
+	    #print_r($sql); die;
+        #$myfile = fopen("sql_log.txt", "a");     fwrite($myfile, "\n### ".date('Y-m-d H:i:s')." ### \n".$sql."\n");    fclose($myfile);
+        #$file = file_get_contents("sql_log.txt");   file_put_contents("sql_log.txt", "\n### ".date('Y-m-d H:i:s')." ### \n".$sql."\n" . $file);
 
         // Bind parameters
         if ( is_array( $bindings ) ) {

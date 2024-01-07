@@ -20,7 +20,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 							</div><!-- /.panel-heading -->
 							<div class="panel-body">
 								<div style="padding:10px">
-									<table id="players" class="table table-bordered table-striped table-condensed display" style="cursor:pointer">
+									<table id="players" class="table table-hover table-bordered table-striped table-condensed display" style="cursor:pointer">
 										<thead>
 											<tr>
 												<th>ID</th>
@@ -30,9 +30,10 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 												<th>Method</th>
 												<th>Duration</th>
 												<th>Country</th>
-												<th><i class="fa fa-usd"></i></th>
-												<th><i class="fa fa-html5"></i></th>
+												<th title="Premium status. 0 = F2P, 1 = Premium aka you bought the game"><i class="fa fa-usd"></i></th>
+												<th title="Html MOTD disabled status"><i class="fa fa-html5"></i></th>
 												<th>OS</th>
+												<th>Server</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -47,7 +48,7 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 <script type="text/javascript">
 	$(document).ready(function() {
 		var players = $('#players').DataTable( {
-			"processing": false,
+			"processing": true,
 			"serverSide": true,
 			"ajax": "inc/server_processing.php?type=getconnections",
 			"columns": [
@@ -60,23 +61,25 @@ if(empty($_SERVER['HTTP_X_REQUESTED_WITH']) || !strtolower($_SERVER['HTTP_X_REQU
 				{ "data": "country" },
 				{ "data": "premium" },
 				{ "data": "html_motd_disabled" },
-				{ "data": "os" }
+				{ "data": "os" },
+				{ "data": "server_ip", "visible" : false, "searchable" : true }
 			],
 			"order": [[0, 'desc']]
 		});
 		$('#players tbody').on('click', 'tr', function () {
-			$.ajax({
-				type: "GET",
-				url: "inc/getplayerinfo.php",
-				data: 'id='+players.cell(this, 2).data(),
-				beforeSend: function(){
-					$('#overlay').fadeIn();
-				},
-				success: function(msg){
-					$('#content').html(msg);
-					$('#overlay').fadeOut();
-				}
-			});
+			window.location.href = '#/stats/players/info/' + players.cell(this, 2).data();
+			// $.ajax({
+			// 	type: "GET",
+			// 	url: "inc/getplayerinfo.php",
+			// 	data: 'id='+players.cell(this, 2).data(),
+			// 	beforeSend: function(){
+			// 		$('#overlay').fadeIn();
+			// 	},
+			// 	success: function(msg){
+			// 		$('#content').html(msg);
+			// 		$('#overlay').fadeOut();
+			// 	}
+			// });
 		});
 	});
 </script>
